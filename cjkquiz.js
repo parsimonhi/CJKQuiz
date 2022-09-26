@@ -262,6 +262,18 @@ cjkq.reorder=function()
 		else if(tiles[k].getAttribute("data-t")=="translation") z=z+2;
 		tiles[k].style.order=z;
 	}
+	cjkq.reordered=1;
+};
+cjkq.unorder=function()
+{
+	var k,kmax,tiles;
+	tiles=document.querySelectorAll(".cjkq .tile");
+	kmax=tiles.length;
+	for (k=0;k<kmax;k++)
+	{
+		tiles[k].style.order=0;
+	}
+	cjkq.reordered=0;
 };
 cjkq.finalCut=function()
 {
@@ -316,6 +328,7 @@ cjkq.start=function(dicoName)
 	else cjkq.dicoName=cjkq.params.jaDicoName;
 	if(cjkq.timer) clearInterval(cjkq.timer);
 	cjkq.timer=0;
+	cjkq.reordered=0;
 	fetch("_json/"+cjkq.dicoName+".json")
 	.then(r=>r.json())
 	.then(r=>cjkq.addPad(cjkq.makePad(r)));

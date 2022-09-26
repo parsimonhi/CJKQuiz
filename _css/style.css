@@ -6,26 +6,15 @@ body
 }
 .selector
 {
-	position:relative;
+	display:block;
 	margin:0 auto;
 	padding:0;
 	text-align:center;
 }
-.selector img
+.selector.settings img
 {
 	display:block;
-}
-.selector img[onclick]
-{
 	border:1px solid #ccc;
-}
-.selector.ja
-{
-	display:block;
-}
-.selector.zh
-{
-	display:none;
 }
 .selector li
 {
@@ -34,45 +23,55 @@ body
 	padding:0;
 	list-style-type:none;
 }
-.selector li button,
-.dialog button
+.selector.settings li button,
+.selector.action li button
+{
+	border:0;
+	background:transparent;
+	margin:0;
+	padding:0;
+}
+.selector.ja li button,
+.selector.zh li button
 {
 	font-size:1em;
+	margin:0.25em;
 	min-width:2em;
 }
-.dialog
+.settingsDialog
 {
-	position:absolute;
-	top:105%;
-	left:50%;
-	transform:translateX(-50%);
-	z-index:1;
-	border:1px solid #000;
+	border:8px solid #000;
 	background:#fff;
 	padding:1em;
 }
-.dialog label
+.settingsDialog::backdrop
+{
+  background:#0009;
+}
+.settingsDialog label
 {
 	display:flex;
 	justify-content:space-between;
 	margin:0.25em;
 	text-align:left;
 }
-.dialog label span
+.settingsDialog label span
 {
 	margin-right:0.25em;
 }
-.dialog label:last-of-type
+.settingsDialog label:first-of-type
 {
 	display:block;
 }
-.dialog label:last-of-type span
+.settingsDialog label:first-of-type span
 {
 	margin-left:0.25em;
 	margin-right:0;
 }
-.dialog button
+.settingsDialog button
 {
+	font-size:1em;
 	margin:1em 0.25em 0.25em 0.25em;
+	min-width:2em;
 }
 [onclick] {cursor:pointer;}

@@ -1,0 +1,14 @@
+<svg viewBox='-1260 -1260 2520 2520' xmlns="http://www.w3.org/2000/svg">
+<defs>
+<marker id="reorder-arrow" markerWidth="20" markerHeight="20" refX="0" refY="1" orient="auto" markerUnits="strokeWidth">
+<path d="M0,0 L0,3 L3,1 z" fill="#000" />
+</marker>
+</defs>
+<path
+	stroke-linecap="round" fill="none" stroke="#000" stroke-width="252"
+	marker-end="url(#reorder-arrow)"
+	d="M 785,500 A 885,885 0 0 1 -785,500"/>
+<path stroke-linecap="round" fill="none" stroke="#000" stroke-width="252"
+	marker-end="url(#reorder-arrow)"
+	d="M -785,-500 A 885,885 0 0 1 785,-500"/>
+</svg>
