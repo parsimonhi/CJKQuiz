@@ -1,0 +1,79 @@
+body
+{
+	background:#fff;
+	font-family:sans-serif;
+	text-align:center;
+}
+.selector
+{
+	position:relative;
+	margin:0 auto;
+	padding:0;
+	text-align:center;
+}
+.selector img
+{
+	display:block;
+}
+.selector img[onclick]
+{
+	border:1px solid #ccc;
+}
+.selector.ja
+{
+	display:block;
+}
+.selector.zh
+{
+	display:none;
+}
+.selector li
+{
+	display:inline-block;
+	margin:0;
+	padding:0;
+	list-style-type:none;
+}
+.selector li button,
+.dialog button
+{
+	/*
+	-webkit-appearance:none;
+	-moz-appearance:none;
+	appearance:none;
+	font-size:1em;
+	color:#000;
+	background:#fff;
+	border:1px solid #000;
+	border-radius:0.125em;
+	*/
+	font-size:1em;
+	min-width:2em;
+}
+.dialog
+{
+	position:absolute;
+	top:105%;
+	left:50%;
+	transform:translateX(-50%);
+	z-index:1;
+	border:1px solid #000;
+	background:#fff;
+	padding:1em;
+}
+.dialog label
+{
+	display:flex;
+	justify-content:space-between;
+	margin:0.25em;
+	text-align:left;
+}
+.dialog label span
+{
+	margin-right:0.25em;
+}
+.dialog button
+{
+	margin:0.25em;
+}
+[onclick] {cursor:pointer;}

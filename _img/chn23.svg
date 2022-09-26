@@ -1,0 +1,11 @@
+<svg viewBox="-1260 -840 2520 1680" xmlns="http://www.w3.org/2000/svg">
+<defs>
+ <path id="chn23s" d="M0,-1 0.59,0.81 -0.95,-0.31H0.95L-0.59,0.81Z" fill="#ff0"/>
+</defs>
+<rect x="-1260" y="-840" width="2520" height="1680" fill="#e11"/>
+<use href="#chn23s" transform="translate(-840,-420) scale(252)"/>
+<use href="#chn23s" transform="translate(-420,-672) rotate(23) scale(84)"/>
+<use href="#chn23s" transform="translate(-252,-504) rotate(46) scale(84)"/>
+<use href="#chn23s" transform="translate(-252,-252) rotate(70) scale(84)"/>
+<use href="#chn23s" transform="translate(-420,-84) rotate(21) scale(84)"/>
+</svg>
