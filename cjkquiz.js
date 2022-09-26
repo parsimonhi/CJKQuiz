@@ -9,7 +9,6 @@ cjkq.scoreLabel={en:"Score: ",fr:"Note : "};
 cjkq.expiredTimeLabel={en:"Expired time!",fr:"Temps expiré !"};
 cjkq.gameOverLabel={en:"Game over!",fr:"Terminé !"};
 cjkq.js=document.scripts[document.scripts.length-1]; // current js script
-cjkq.selected={character:null,transcription:null,translation:null};
 cjkq.deplonk=function()
 {
 	let tiles=document.querySelectorAll(".plonk");
@@ -297,6 +296,7 @@ cjkq.start=function(dicoName)
 	cjkq.timePerChar=cjkq.params.timePerChar?parseInt(cjkq.params.timePerChar+"",10):10;
 	cjkq.ijmax=cjkq.kmax*3;
 	cjkq.initialTime=cjkq.kmax*cjkq.timePerChar;
+	cjkq.selected={character:null,transcription:null,translation:null};
 	if(dicoName)
 	{
 		if(cjkq.params.sourceLang=="zh") cjkq.params.zhDicoName=dicoName;
