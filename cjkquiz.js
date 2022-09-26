@@ -34,11 +34,13 @@ cjkq.shuffle=function(a)
 };
 cjkq.getSome=function(a)
 {
-	// assume that a has at least cjkq.kmax elements
 	let b=[],c=[],d=[],k,kmax=a.length;
-	cjkq.dicoCharNum=kmax;
-	for(k=0;k<kmax;k++)
-		b[k]=a[k]; // otherwise a could be modified
+	cjkq.kmax=cjkq.params.kmax?parseInt(cjkq.params.kmax+"",10):10;
+	if(cjkq.kmax>kmax) cjkq.kmax=kmax;
+	cjkq.timePerChar=cjkq.params.timePerChar?parseInt(cjkq.params.timePerChar+"",10):10;
+	cjkq.ijmax=cjkq.kmax*3;
+	cjkq.initialTime=cjkq.kmax*cjkq.timePerChar;
+	for(k=0;k<kmax;k++) b[k]=a[k]; // otherwise a could be modified?
 	for(k=0;k<cjkq.kmax;k++)
 	{
 		z=Math.floor(Math.random() * b.length);
@@ -52,7 +54,6 @@ cjkq.getSome=function(a)
 		d[k*3+1]=[k,c[k][1],"transcription"];
 		d[k*3+2]=[k,c[k][(cjkq.params.targetLang=="fr")?3:2],"translation"];
 	}
-	for(k=cjkq.kmax*3;k<cjkq.ijmax;k++) d.push("");
 	return cjkq.shuffle(d);
 };
 cjkq.show=function()
@@ -165,9 +166,6 @@ cjkq.makePad=function(dico)
 	let ij,s,d=cjkq.getSome(dico);
 	s="<div class='time'></div>";
 	s+="<div class='pad'>";
-	//s+="<caption></caption>";
-	//s+="<caption></caption>";
-	//s+="<caption><em>"+cjkq.copyright+"</em></caption>";
 	for(ij=0;ij<cjkq.ijmax;ij++)
 	{
 		let x=d[ij];
@@ -307,10 +305,6 @@ cjkq.refreshAll=function()
 cjkq.start=function(dicoName)
 {
 	cjkq.params=JSON.parse(localStorage.getItem('cjkq'));
-	cjkq.kmax=cjkq.params.kmax?parseInt(cjkq.params.kmax+"",10):10;
-	cjkq.timePerChar=cjkq.params.timePerChar?parseInt(cjkq.params.timePerChar+"",10):10;
-	cjkq.ijmax=cjkq.kmax*3;
-	cjkq.initialTime=cjkq.kmax*cjkq.timePerChar;
 	cjkq.selected={character:null,transcription:null,translation:null};
 	if(dicoName)
 	{
@@ -320,7 +314,8 @@ cjkq.start=function(dicoName)
 	}
 	if(cjkq.params.sourceLang=="zh") cjkq.dicoName=cjkq.params.zhDicoName
 	else cjkq.dicoName=cjkq.params.jaDicoName;
-	if(cjkq.timer) {clearInterval(cjkq.timer);cjkq.timer=0;}
+	if(cjkq.timer) clearInterval(cjkq.timer);
+	cjkq.timer=0;
 	fetch("_json/"+cjkq.dicoName+".json")
 	.then(r=>r.json())
 	.then(r=>cjkq.addPad(cjkq.makePad(r)));

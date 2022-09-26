@@ -90,9 +90,9 @@ function doSettings()
 	s="<div class='dialog'>";
 	s+="<h1>CJKQuiz</h1>";
 	a=(cjkq.params.targetLang=="fr")?"Nombre de caractères :":"Number of chars:";
-	s+="<label><span>"+a+"</span><input class='numOfChars' type='number' min='1' max='30' value='"+cjkq.kmax+"'></label>";
+	s+="<label><span>"+a+"</span><input class='numOfChars' type='number' min='1' max='30' value='"+cjkq.params.kmax+"'></label>";
 	b=(cjkq.params.targetLang=="fr")?"Temps par caractère :":"Time per char:";
-	s+="<label><span>"+b+"</span><input class='timePerChar' type='number' min='1' max='30' value='"+cjkq.timePerChar+"'></label>";
+	s+="<label><span>"+b+"</span><input class='timePerChar' type='number' min='1' max='30' value='"+cjkq.params.timePerChar+"'></label>";
 	c=(cjkq.params.targetLang=="fr")?"Réordonner à la fin":"Reorder at end";
 	z=(cjkq.params.reorderAtEnd=="1")?" checked":0;
 	s+="<label><input class='reorderAtEnd' type='checkbox'"+z+"><span>"+c+"</span></label>";
@@ -116,6 +116,7 @@ function doSettings()
 <li class="flag fr"><img onclick="setEn();cjkq.start('');" alt="Drapeau français" src="_img/fra23.svg" width="48" height="32"></li>
 </ul>
 <ul class="selector ja">
+	<!--<li><button onclick="cjkq.start('TestJa');">Test</button></li>-->
 	<li><button onclick="cjkq.start('G1');">1</button></li>
 	<li><button onclick="cjkq.start('G2');">2</button></li>
 	<li><button onclick="cjkq.start('G3');">3</button></li>
@@ -136,6 +137,7 @@ function doSettings()
 </ul>
 -->
 <ul class="selector zh">
+	<!--<li><button onclick="cjkq.start('TestJa');">Test</button></li>-->
 	<li><button onclick="cjkq.start('NHSK1');">1</button></li>
 	<li><button onclick="cjkq.start('NHSK2');">2</button></li>
 	<li><button onclick="cjkq.start('NHSK3');">3</button></li>

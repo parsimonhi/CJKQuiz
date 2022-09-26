@@ -37,16 +37,6 @@ body
 .selector li button,
 .dialog button
 {
-	/*
-	-webkit-appearance:none;
-	-moz-appearance:none;
-	appearance:none;
-	font-size:1em;
-	color:#000;
-	background:#fff;
-	border:1px solid #000;
-	border-radius:0.125em;
-	*/
 	font-size:1em;
 	min-width:2em;
 }
