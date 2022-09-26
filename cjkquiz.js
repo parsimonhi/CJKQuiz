@@ -1,5 +1,5 @@
 if(!localStorage.getItem('cjkq'))
-	localStorage.setItem('cjkq','{"kmax":"10","timePerChar":"10","sourceLang":"ja","targetLang":"en","jaDicoName":"G1","zhDicoName":"NHSK1"}')
+	localStorage.setItem('cjkq','{"reorderAtEnd":"0","kmax":"10","timePerChar":"10","sourceLang":"ja","targetLang":"en","jaDicoName":"G1","zhDicoName":"NHSK1"}')
 cjkq={}
 cjkq.copyright="<a href='https://github.com/parsimonhi/CJKQuiz'>CJKQuiz</a> Copyright 2015-2022 FM&SH";
 cjkq.levelLabel={en:"Level: ",fr:"Niveau : "};
@@ -151,7 +151,7 @@ cjkq.doIt=function(ev)
 				{
 					let s;
 					cjkq.stopped=1;
-					cjkq.badify();
+					cjkq.finalCut();
 					s=cjkq.gameOverLabel[cjkq.params.targetLang]+"<br>";
 					s+=cjkq.scoreLabel[cjkq.params.targetLang]+cjkq.compute();
 					cjkq.alert(s,"good");
@@ -242,7 +242,7 @@ cjkq.addSomeSolution=function(cls)
 }
 cjkq.addSolution=function()
 {
-	var k,data=[],list1=[],list2=[],i=0,kmax,tiles;
+	var k,kmax,tiles;
 	tiles=document.querySelectorAll(".cjkq .tile");
 	kmax=tiles.length;
 	for (k=0;k<kmax;k++)
@@ -251,7 +251,21 @@ cjkq.addSolution=function()
 				+(parseInt(tiles[k].getAttribute("data-k"),10)+1)
 				+"</span>";
 };
-cjkq.badify=function()
+cjkq.reorder=function()
+{
+	var k,kmax,tiles;
+	tiles=document.querySelectorAll(".cjkq .tile");
+	kmax=tiles.length;
+	for (k=0;k<kmax;k++)
+	{
+		let z;
+		z=parseInt(tiles[k].getAttribute("data-k"),10)*3;
+		if(tiles[k].getAttribute("data-t")=="transcription") z=z+1;
+		else if(tiles[k].getAttribute("data-t")=="translation") z=z+2;
+		tiles[k].style.order=z;
+	}
+};
+cjkq.finalCut=function()
 {
 	let tiles=document.querySelectorAll(".cjkq .tile");
 	Array.from(tiles).forEach(e =>
@@ -259,6 +273,7 @@ cjkq.badify=function()
 			if(e.innerHTML&&!e.classList.contains("good")) e.classList.add("bad");
 		});
 	cjkq.addSolution();
+	if(cjkq.params.reorderAtEnd=="1") cjkq.reorder();
 };
 cjkq.alert=function(s,cls)
 {
@@ -283,7 +298,7 @@ cjkq.refreshAll=function()
 	{
 		let s;
 		cjkq.stopped=1;
-		cjkq.badify();
+		cjkq.finalCut();
 		s=cjkq.expiredTimeLabel[cjkq.params.targetLang]+"<br>";
 		s+=cjkq.scoreLabel[cjkq.params.targetLang]+cjkq.compute();
 		cjkq.alert(s,"bad");

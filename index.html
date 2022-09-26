@@ -72,6 +72,7 @@ function OKSettings()
 	p=JSON.parse(localStorage.getItem('cjkq'));
 	p.kmax=e.querySelector('.numOfChars').value;
 	p.timePerChar=e.querySelector('.timePerChar').value;
+	p.reorderAtEnd=e.querySelector('.reorderAtEnd').checked?"1":"0";
 	localStorage.setItem('cjkq',JSON.stringify(p));
 	if(e) e.parentNode.removeChild(e);
 	cjkq.start('');
@@ -83,15 +84,18 @@ function cancelSettings()
 }
 function doSettings()
 {
-	var s,e,p,a,b;
+	var s,e,p,a,b,c,z;
 	e=document.querySelector(".selector .dialog");
 	if(e) {e.parentNode.removeChild(e);return;}
 	s="<div class='dialog'>";
 	s+="<h1>CJKQuiz</h1>";
-	a=((cjkq.params.targetLang=="fr")?"Nombre de caractères :":"Number of chars:");
+	a=(cjkq.params.targetLang=="fr")?"Nombre de caractères :":"Number of chars:";
 	s+="<label><span>"+a+"</span><input class='numOfChars' type='number' min='1' max='30' value='"+cjkq.kmax+"'></label>";
-	b=((cjkq.params.targetLang=="fr")?"Temps par caractère :":"Time per char:");
+	b=(cjkq.params.targetLang=="fr")?"Temps par caractère :":"Time per char:";
 	s+="<label><span>"+b+"</span><input class='timePerChar' type='number' min='1' max='30' value='"+cjkq.timePerChar+"'></label>";
+	c=(cjkq.params.targetLang=="fr")?"Réordonner à la fin":"Reorder at end";
+	z=(cjkq.params.reorderAtEnd=="1")?" checked":0;
+	s+="<label><input class='reorderAtEnd' type='checkbox'"+z+"><span>"+c+"</span></label>";
 	s+="<button onclick='OKSettings()'>OK</button>";
 	s+="<button onclick='cancelSettings()'>"+((cjkq.params.targetLang=="fr")?"Annuler":"Cancel")+"</button>";
 	s+="</div>";

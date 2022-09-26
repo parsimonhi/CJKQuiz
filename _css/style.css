@@ -72,8 +72,17 @@ body
 {
 	margin-right:0.25em;
 }
+.dialog label:last-of-type
+{
+	display:block;
+}
+.dialog label:last-of-type span
+{
+	margin-left:0.25em;
+	margin-right:0;
+}
 .dialog button
 {
-	margin:0.25em;
+	margin:1em 0.25em 0.25em 0.25em;
 }
 [onclick] {cursor:pointer;}
