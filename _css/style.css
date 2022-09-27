@@ -38,15 +38,21 @@ body
 	margin:0.25em;
 	min-width:2em;
 }
-.settingsDialog
+dialog
 {
-	border:8px solid #000;
-	background:#fff;
-	padding:1em;
+	padding:1rem;
+	border-radius:0.25rem;
+	border:4px solid #000;
 }
-.settingsDialog::backdrop
+dialog::backdrop
 {
-  background:#0009;
+	background:#0007;
+}
+dialog button
+{
+	font-size:1em;
+	margin:0.25em;
+	min-width:2em;
 }
 .settingsDialog label
 {
@@ -57,21 +63,10 @@ body
 }
 .settingsDialog label span
 {
-	margin-right:0.25em;
+	margin:0 0.25em;
 }
 .settingsDialog label:first-of-type
 {
-	display:block;
-}
-.settingsDialog label:first-of-type span
-{
-	margin-left:0.25em;
-	margin-right:0;
-}
-.settingsDialog button
-{
-	font-size:1em;
-	margin:1em 0.25em 0.25em 0.25em;
-	min-width:2em;
+	justify-content:start;
 }
 [onclick] {cursor:pointer;}

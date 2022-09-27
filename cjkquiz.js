@@ -192,11 +192,10 @@ cjkq.makePad=function(dico)
 cjkq.addPad=function(s)
 {
 	let e,p;
-	e=document.getElementById("cjkq");
+	e=document.querySelector(".cjkq");
 	if(!e)
 	{
 		e=document.createElement("div");
-		e.id="cjkq";
 		e.classList.add("cjkq");
 		cjkq.js.parentNode.insertBefore(e,cjkq.js.nextSibling);
 	}
@@ -285,14 +284,36 @@ cjkq.finalCut=function()
 	cjkq.addSolution();
 	if(cjkq.params.reorderAtEnd=="1") cjkq.reorder();
 };
-cjkq.alert=function(s,cls)
+cjkq.alert=function(m,cls)
+{
+	var e;
+	e=document.querySelector(".cjkq .alertDialog");
+	if(!e)
+	{
+		let s,a,b,c,p;
+		e=document.createElement('dialog');
+		e.classList.add("alertDialog");
+		e.classList.add(cls);
+		s="<form method='dialog'>";
+		s+="<p class='message'>"+m+"</p>";
+		s+="<button value='OK'>OK</button>";
+		s+="</form>";
+		e.innerHTML=s;
+		p=document.querySelector(".cjkq .pad");
+		p.after(e);
+	}
+	e.querySelector('.message').innerHTML=m;
+	e.showModal();
+}
+cjkq.alert2=function(s,cls)
 {
 	let e;
-	e=document.createElement("div");
+	e=document.createElement("dialog");
+	e.open=true;
 	e.innerHTML=s;
 	e.classList.add("alert");
 	e.classList.add(cls);
-	document.getElementById("cjkq").appendChild(e);
+	document.querySelector(".cjkq .pad").appendChild(e);
 	e.addEventListener("click",function(){e.classList.add("done");})
 };
 cjkq.compute=function()

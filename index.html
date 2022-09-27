@@ -90,7 +90,10 @@ function doSettings()
 	e=document.querySelector(".settingsDialog");
 	if(!e)
 	{
-		let s="<form method='dialog'>",a,b,c,p;
+		let s,a,b,c,p;
+		e=document.createElement('dialog');
+		e.classList.add("settingsDialog");
+		s="<form method='dialog'>";
 		s+="<h1>CJKQuiz</h1>";
 		a=(cjkq.params.targetLang=="fr")?"Réordonner à la fin":"Reorder at end";
 		s+="<label><input class='reorderAtEnd' type='checkbox'><span>"+a+"</span></label>";
@@ -101,8 +104,6 @@ function doSettings()
 		s+="<button value='OK'>OK</button>";
 		s+="<button value='cancel'>"+((cjkq.params.targetLang=="fr")?"Annuler":"Cancel")+"</button>";
 		s+="</form>";
-		e=document.createElement('dialog');
-		e.classList.add("settingsDialog");
 		e.innerHTML=s;
 		e.addEventListener('close',function()
 			{
@@ -111,14 +112,10 @@ function doSettings()
 		p=document.querySelector(".selector");
 		p.after(e);
 	}
-	if(e.open) {e.open=false;return;}
-	else
-	{
-		e.querySelector('.reorderAtEnd').checked=(cjkq.params.reorderAtEnd=="1")?" checked":0;
-		e.querySelector('.numOfChars').value=cjkq.params.kmax;
-		e.querySelector('.timePerChar').value=cjkq.params.timePerChar;
-		e.showModal();
-	}
+	e.querySelector('.reorderAtEnd').checked=(cjkq.params.reorderAtEnd=="1")?" checked":0;
+	e.querySelector('.numOfChars').value=cjkq.params.kmax;
+	e.querySelector('.timePerChar').value=cjkq.params.timePerChar;
+	e.showModal();
 }
 function doReorder()
 {

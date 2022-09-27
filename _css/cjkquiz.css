@@ -27,37 +27,6 @@
 {
 	filter:invert(1);
 }
-.cjkq .alert
-{
-	position:absolute;
-	top:50%;
-	left:50%;
-	transform:translate(-50%,-75%);
-	padding:1rem;
-	text-align:center;
-	font-size:1.25rem;
-	border-radius:0.25rem;
-}
-.cjkq .alert.bad
-{
-	color:var(--neutralColor);
-	background:var(--neutralBackground);
-	border:8px solid var(--neutralBorderColor);
-}
-.cjkq .alert.good
-{
-	color:var(--neutralColor);
-	background:var(--neutralBackground);
-	border:8px solid var(--neutralBorderColor);
-}
-.cjkq .alert.done
-{
-	display:none;
-}
-.cjkq .alert:hover
-{
-	cursor:pointer;
-}
 .cjkq .solution
 {
 	position:absolute;
