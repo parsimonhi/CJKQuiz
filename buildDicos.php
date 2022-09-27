@@ -135,7 +135,7 @@ function buildOne($name,$lang,$ref)
 		$r[]=[$c,$t1,$t2,$t3,$w];
 	}
 	$s=json_encode($r,JSON_UNESCAPED_UNICODE);
-	file_put_contents("official/CJKQuiz/_json/".$name.".json",$s);
+	file_put_contents("_json/".$name.".json",$s);
 	echo $name." done!<br><br>";
 }
 
