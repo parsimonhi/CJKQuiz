@@ -2,3 +2,6 @@
 ######################
 .DS_Store
 .DS_Store?
+# Other files #
+###############
+buildDicos.php
