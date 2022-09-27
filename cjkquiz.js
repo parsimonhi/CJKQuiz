@@ -93,7 +93,6 @@ cjkq.cleanNumbers=function()
 };
 cjkq.doIt=function(ev)
 {
-	if(cjkq.stopped) return;
 	let e1=ev.target;
 	if(e1)
 	{
@@ -280,6 +279,7 @@ cjkq.finalCut=function()
 	Array.from(tiles).forEach(e =>
 		{
 			if(e.innerHTML&&!e.classList.contains("good")) e.classList.add("bad");
+			e.disabled=true;
 		});
 	cjkq.addSolution();
 	if(cjkq.params.reorderAtEnd=="1") cjkq.reorder();
