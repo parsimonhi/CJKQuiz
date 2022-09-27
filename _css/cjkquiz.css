@@ -1,6 +1,5 @@
 .cjkq
 {
-	position:relative;
 	--neutralColor:#000;
 	--neutralBorderColor:#000;
 	--neutralBackground:#fff;
@@ -126,3 +125,10 @@
 	background:var(--goodBackground);
 	border-color:var(--goodBorderColor);
 }
+.cjkq .alertDialog button
+{
+	font-size:1em;
+	margin:0.25em;
+	min-width:2em;
+}
+

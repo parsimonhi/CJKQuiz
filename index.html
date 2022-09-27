@@ -21,11 +21,11 @@ function setZh()
 	for(k=0;k<kmax;k++) listZh[k].style.display="block";
 	kmax=listJa.length;
 	for(k=0;k<kmax;k++) listJa[k].style.display="none";
-	p=JSON.parse(localStorage.getItem('cjkq'));
-	p.sourceLang="zh";
 	flagJa.style.display="none";
 	flagZh.style.display="inline-block";
-	localStorage.setItem('cjkq',JSON.stringify(p));
+	p=cjkq.getParams();
+	p.sourceLang="zh";
+	cjkq.setParams(p);
 }
 function setJa()
 {
@@ -38,11 +38,11 @@ function setJa()
 	for(k=0;k<kmax;k++) listZh[k].style.display="none";
 	kmax=listJa.length;
 	for(k=0;k<kmax;k++) listJa[k].style.display="block";
-	p=JSON.parse(localStorage.getItem('cjkq'));
-	p.sourceLang="ja";
 	flagJa.style.display="inline-block";
 	flagZh.style.display="none";
-	localStorage.setItem('cjkq',JSON.stringify(p));
+	p=cjkq.getParams();
+	p.sourceLang="ja";
+	cjkq.setParams(p);
 }
 function setEn()
 {
@@ -51,13 +51,13 @@ function setEn()
 	var flagFr=document.querySelector(".flag.fr");
 	var settingsIcon=document.querySelector(".settingsIcon");
 	var reorderIcon=document.querySelector(".reorderIcon");
-	p=JSON.parse(localStorage.getItem('cjkq'));
-	p.targetLang="en";
-	localStorage.setItem('cjkq',JSON.stringify(p));
 	flagEn.style.display="inline-block";
 	flagFr.style.display="none";
 	settingsIcon.setAttribute("title","Settings");
 	reorderIcon.setAttribute("title","Reorder/Unorder");
+	p=cjkq.getParams();
+	p.targetLang="en";
+	cjkq.setParams(p);
 }
 function setFr()
 {
@@ -66,22 +66,22 @@ function setFr()
 	var flagFr=document.querySelector(".flag.fr");
 	var settingsIcon=document.querySelector(".settingsIcon");
 	var reorderIcon=document.querySelector(".reorderIcon");
-	p=JSON.parse(localStorage.getItem('cjkq'));
-	p.targetLang="fr";
-	localStorage.setItem('cjkq',JSON.stringify(p));
 	flagEn.style.display="none";
 	flagFr.style.display="inline-block";
 	settingsIcon.setAttribute("title","Paramétrage");
 	reorderIcon.setAttribute("title","Réordonner/Mélanger");
+	p=cjkq.getParams();
+	p.targetLang="fr";
+	cjkq.setParams(p);
 }
 function doOKSettings()
 {
 	var e=document.querySelector(".settingsDialog"),p;
-	p=JSON.parse(localStorage.getItem('cjkq'));
+	p=cjkq.getParams();
 	p.kmax=e.querySelector('.numOfChars').value;
 	p.timePerChar=e.querySelector('.timePerChar').value;
 	p.reorderAtEnd=e.querySelector('.reorderAtEnd').checked?"1":"0";
-	localStorage.setItem('cjkq',JSON.stringify(p));
+	cjkq.setParams(p);
 	cjkq.start('');
 }
 function doSettings()
@@ -109,7 +109,7 @@ function doSettings()
 			{
 				if(this.returnValue=="OK") doOKSettings();
 			});
-		p=document.querySelector(".selector");
+		p=document.querySelector(".cjkq .pad");
 		p.after(e);
 	}
 	e.querySelector('.reorderAtEnd').checked=(cjkq.params.reorderAtEnd=="1")?" checked":0;
@@ -171,7 +171,7 @@ function doReorder()
 <script>
 window.addEventListener("load",function()
 	{
-		let p=JSON.parse(localStorage.getItem('cjkq'));
+		let p=cjkq.getParams();
 		if(p.sourceLang=="zh") setZh();
 		else setJa();
 		if(p.targetLang=="En") setEn();

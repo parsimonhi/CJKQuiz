@@ -32,23 +32,8 @@ body
 	padding:0;
 }
 .selector.ja li button,
-.selector.zh li button
-{
-	font-size:1em;
-	margin:0.25em;
-	min-width:2em;
-}
-dialog
-{
-	padding:1rem;
-	border-radius:0.25rem;
-	border:4px solid #000;
-}
-dialog::backdrop
-{
-	background:#0007;
-}
-dialog button
+.selector.zh li button,
+.settingsDialog button
 {
 	font-size:1em;
 	margin:0.25em;

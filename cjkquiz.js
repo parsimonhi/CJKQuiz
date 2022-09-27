@@ -2,6 +2,7 @@ if(!localStorage.getItem('cjkq'))
 	localStorage.setItem('cjkq','{"reorderAtEnd":"0","kmax":"10","timePerChar":"10","sourceLang":"ja","targetLang":"en","jaDicoName":"G1","zhDicoName":"NHSK1"}')
 cjkq={}
 cjkq.copyright="<a href='https://github.com/parsimonhi/CJKQuiz'>CJKQuiz</a> Copyright 2015-2022 FM&SH";
+cjkq.instructions={en:"Select a character, its prononciation and its meaning.",fr:"Sélectionnez un caractère, sa prononciation et sa signification."};
 cjkq.levelLabel={en:"Level: ",fr:"Niveau : "};
 cjkq.answersLabel={en:"Answers: ",fr:"Réponses : "};
 cjkq.errorsLabel={en:"Errors: ",fr:"Erreurs : "};
@@ -20,6 +21,14 @@ cjkq.plonk=function()
 	cjkq.selected.character.classList.add("plonk");
 	cjkq.selected.transcription.classList.add("plonk");
 	cjkq.selected.translation.classList.add("plonk");
+};
+cjkq.getParams=function()
+{
+	return JSON.parse(localStorage.getItem('cjkq'));
+};
+cjkq.setParams=function(p)
+{
+	localStorage.setItem('cjkq',JSON.stringify(p));
 };
 cjkq.shuffle=function(a)
 {
@@ -162,8 +171,9 @@ cjkq.doIt=function(ev)
 };
 cjkq.makePad=function(dico)
 {
-	let ij,s,d=cjkq.getSome(dico);
-	s="<div class='time'></div>";
+	let ij,s="",d=cjkq.getSome(dico);
+	s+="<div class='instructions'>"+cjkq.instructions[cjkq.params.targetLang]+"</div>";
+	s+="<div class='time'></div>";
 	s+="<div class='pad'>";
 	for(ij=0;ij<cjkq.ijmax;ij++)
 	{
@@ -337,13 +347,13 @@ cjkq.refreshAll=function()
 };
 cjkq.start=function(dicoName)
 {
-	cjkq.params=JSON.parse(localStorage.getItem('cjkq'));
+	cjkq.params=cjkq.getParams();
 	cjkq.selected={character:null,transcription:null,translation:null};
 	if(dicoName)
 	{
 		if(cjkq.params.sourceLang=="zh") cjkq.params.zhDicoName=dicoName;
 		else cjkq.params.jaDicoName=dicoName;
-		localStorage.setItem('cjkq',JSON.stringify(cjkq.params));
+		cjkq.setParams(cjkq.params);
 	}
 	if(cjkq.params.sourceLang=="zh") cjkq.dicoName=cjkq.params.zhDicoName
 	else cjkq.dicoName=cjkq.params.jaDicoName;
