@@ -67,7 +67,6 @@ cjkq.getSome=function(a)
 };
 cjkq.show=function()
 {
-	//document.querySelector(".cjkq .dicoName").innerHTML=cjkq.dicoName;
 	document.querySelector(".cjkq .time").innerHTML=cjkq.time;
 	document.querySelector(".cjkq .level").innerHTML=cjkq.levelLabel[cjkq.params.targetLang]+cjkq.dicoName;
 	document.querySelector(".cjkq .answers").innerHTML=cjkq.answersLabel[cjkq.params.targetLang]+cjkq.answers;
@@ -202,12 +201,6 @@ cjkq.addPad=function(s)
 {
 	let e,p;
 	e=document.querySelector(".cjkq");
-	if(!e)
-	{
-		e=document.createElement("div");
-		e.classList.add("cjkq");
-		cjkq.js.parentNode.insertBefore(e,cjkq.js.nextSibling);
-	}
 	e.innerHTML=s;
 	cjkq.stopped=0;
 	cjkq.time=cjkq.initialTime;
@@ -303,29 +296,18 @@ cjkq.alert=function(m,cls)
 		let s,a,b,c,p;
 		e=document.createElement('dialog');
 		e.classList.add("alertDialog");
-		e.classList.add(cls);
+		e.classList.add(cls?cls:"neutral");
 		s="<form method='dialog'>";
 		s+="<p class='message'>"+m+"</p>";
 		s+="<button value='OK'>OK</button>";
 		s+="</form>";
 		e.innerHTML=s;
-		p=document.querySelector(".cjkq .pad");
+		p=document.querySelector(".cjkq");
 		p.after(e);
 	}
 	e.querySelector('.message').innerHTML=m;
 	e.showModal();
 }
-cjkq.alert2=function(s,cls)
-{
-	let e;
-	e=document.createElement("dialog");
-	e.open=true;
-	e.innerHTML=s;
-	e.classList.add("alert");
-	e.classList.add(cls);
-	document.querySelector(".cjkq .pad").appendChild(e);
-	e.addEventListener("click",function(){e.classList.add("done");})
-};
 cjkq.compute=function()
 {
 	return Math.round((20/(2*cjkq.kmax))*Math.max(0,(cjkq.answers*2-cjkq.errors)))+"/20";
@@ -345,8 +327,9 @@ cjkq.refreshAll=function()
 		cjkq.alert(s,"bad");
 	}
 };
-cjkq.start=function(dicoName)
+cjkq.init=function(dicoName)
 {
+	let e;
 	cjkq.params=cjkq.getParams();
 	cjkq.selected={character:null,transcription:null,translation:null};
 	if(dicoName)
@@ -360,7 +343,23 @@ cjkq.start=function(dicoName)
 	if(cjkq.timer) clearInterval(cjkq.timer);
 	cjkq.timer=0;
 	cjkq.reordered=0;
+	e=document.querySelector(".cjkq");
+	if(e) e.innerHTML="";
+	else
+	{
+		e=document.createElement("div");
+		e.classList.add("cjkq");
+		cjkq.js.parentNode.insertBefore(e,cjkq.js.nextSibling);
+	}
+};
+cjkq.start=function(dicoName)
+{
+	cjkq.init(dicoName);
 	fetch("_json/"+cjkq.dicoName+".json")
 	.then(r=>r.json())
 	.then(r=>cjkq.addPad(cjkq.makePad(r)));
+};
+cjkq.stop=function(dicoName)
+{
+	cjkq.init(dicoName);
 };

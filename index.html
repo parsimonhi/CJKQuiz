@@ -25,6 +25,7 @@ function setZh()
 	flagZh.style.display="inline-block";
 	p=cjkq.getParams();
 	p.sourceLang="zh";
+	if(!/^(HSK|NHSK)[0-9]+$/.test(p.zhDicoName)) p.zhDicoName="NHSK1";
 	cjkq.setParams(p);
 }
 function setJa()
@@ -42,6 +43,7 @@ function setJa()
 	flagZh.style.display="none";
 	p=cjkq.getParams();
 	p.sourceLang="ja";
+	if(!/^G[0-9]+$/.test(p.jaDicoName)) p.jaDicoName="G1";
 	cjkq.setParams(p);
 }
 function setEn()
@@ -109,7 +111,7 @@ function doSettings()
 			{
 				if(this.returnValue=="OK") doOKSettings();
 			});
-		p=document.querySelector(".cjkq .pad");
+		p=document.querySelector(".cjkq");
 		p.after(e);
 	}
 	e.querySelector('.reorderAtEnd').checked=(cjkq.params.reorderAtEnd=="1")?" checked":0;
