@@ -23,10 +23,10 @@ function setZh()
 	for(k=0;k<kmax;k++) listJa[k].style.display="none";
 	flagJa.style.display="none";
 	flagZh.style.display="inline-block";
-	p=cjkq.getParams();
+	p=cjkq.getStore();
 	p.sourceLang="zh";
 	if(!/^(HSK|NHSK)[0-9]+$/.test(p.zhDicoName)) p.zhDicoName="NHSK1";
-	cjkq.setParams(p);
+	cjkq.setStore(p);
 }
 function setJa()
 {
@@ -41,14 +41,13 @@ function setJa()
 	for(k=0;k<kmax;k++) listJa[k].style.display="block";
 	flagJa.style.display="inline-block";
 	flagZh.style.display="none";
-	p=cjkq.getParams();
+	p=cjkq.getStore();
 	p.sourceLang="ja";
 	if(!/^G[0-9]+$/.test(p.jaDicoName)) p.jaDicoName="G1";
-	cjkq.setParams(p);
+	cjkq.setStore(p);
 }
 function setEn()
 {
-	var p;
 	var flagEn=document.querySelector(".flag.en");
 	var flagFr=document.querySelector(".flag.fr");
 	var settingsIcon=document.querySelector(".settingsIcon");
@@ -57,13 +56,10 @@ function setEn()
 	flagFr.style.display="none";
 	settingsIcon.setAttribute("title","Settings");
 	reorderIcon.setAttribute("title","Reorder/Unorder");
-	p=cjkq.getParams();
-	p.targetLang="en";
-	cjkq.setParams(p);
+	cjkq.setParamToStore("targetLang","en");
 }
 function setFr()
 {
-	var p;
 	var flagEn=document.querySelector(".flag.en");
 	var flagFr=document.querySelector(".flag.fr");
 	var settingsIcon=document.querySelector(".settingsIcon");
@@ -72,27 +68,23 @@ function setFr()
 	flagFr.style.display="inline-block";
 	settingsIcon.setAttribute("title","Paramétrage");
 	reorderIcon.setAttribute("title","Réordonner/Mélanger");
-	p=cjkq.getParams();
-	p.targetLang="fr";
-	cjkq.setParams(p);
+	cjkq.setParamToStore("targetLang","fr");
 }
 function doOKSettings()
 {
-	var e=document.querySelector(".settingsDialog"),p;
-	p=cjkq.getParams();
-	p.kmax=e.querySelector('.numOfChars').value;
-	p.timePerChar=e.querySelector('.timePerChar').value;
-	p.reorderAtEnd=e.querySelector('.reorderAtEnd').checked?"1":"0";
-	cjkq.setParams(p);
+	var e=document.querySelector(".settingsDialog");
+	cjkq.setParamToStore("kmax",e.querySelector('.numOfChars').value);
+	cjkq.setParamToStore("timePerChar",e.querySelector('.timePerChar').value);
+	cjkq.setParamToStore("reorderAtEnd",e.querySelector('.reorderAtEnd').checked?"1":"0");
 	cjkq.start('');
 }
 function doSettings()
 {
 	var e;
-	e=document.querySelector(".settingsDialog");
+	e=document.querySelector(".cjkq .settingsDialog");
 	if(!e)
 	{
-		let s,a,b,c,p;
+		let s,a,b,c;
 		e=document.createElement('dialog');
 		e.classList.add("settingsDialog");
 		s="<form method='dialog'>";
@@ -111,10 +103,9 @@ function doSettings()
 			{
 				if(this.returnValue=="OK") doOKSettings();
 			});
-		p=document.querySelector(".cjkq");
-		p.after(e);
+		document.querySelector(".cjkq").appendChild(e);
 	}
-	e.querySelector('.reorderAtEnd').checked=(cjkq.params.reorderAtEnd=="1")?" checked":0;
+	e.querySelector('.reorderAtEnd').checked=(cjkq.params.reorderAtEnd=="1");
 	e.querySelector('.numOfChars').value=cjkq.params.kmax;
 	e.querySelector('.timePerChar').value=cjkq.params.timePerChar;
 	e.showModal();
@@ -173,10 +164,9 @@ function doReorder()
 <script>
 window.addEventListener("load",function()
 	{
-		let p=cjkq.getParams();
-		if(p.sourceLang=="zh") setZh();
+		if(cjkq.getParamFromStore("sourceLang")=="zh") setZh();
 		else setJa();
-		if(p.targetLang=="En") setEn();
+		if(cjkq.getParamFromStore("targetLang")=="En") setEn();
 		else setFr();
 		cjkq.start();
 	}

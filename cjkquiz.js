@@ -1,5 +1,3 @@
-if(!localStorage.getItem('cjkq'))
-	localStorage.setItem('cjkq','{"reorderAtEnd":"0","kmax":"10","timePerChar":"10","sourceLang":"ja","targetLang":"en","jaDicoName":"G1","zhDicoName":"NHSK1"}')
 cjkq={}
 cjkq.copyright="<a href='https://github.com/parsimonhi/CJKQuiz'>CJKQuiz</a> Copyright 2015-2022 FM&SH";
 cjkq.instructions={en:"Select a character, its prononciation and its meaning.",fr:"Sélectionnez un caractère, sa prononciation et sa signification."};
@@ -22,12 +20,23 @@ cjkq.plonk=function()
 	cjkq.selected.transcription.classList.add("plonk");
 	cjkq.selected.translation.classList.add("plonk");
 };
-cjkq.getParams=function()
+cjkq.getStore=function()
 {
 	return JSON.parse(localStorage.getItem('cjkq'));
 };
-cjkq.setParams=function(p)
+cjkq.setStore=function(p)
 {
+	localStorage.setItem('cjkq',JSON.stringify(p));
+};
+cjkq.getParamFromStore=function(a)
+{
+	let p=JSON.parse(localStorage.getItem('cjkq'));
+	return p[a];
+};
+cjkq.setParamToStore=function(a,v)
+{
+	let p=JSON.parse(localStorage.getItem('cjkq'));
+	p[a]=v;
 	localStorage.setItem('cjkq',JSON.stringify(p));
 };
 cjkq.shuffle=function(a)
@@ -293,7 +302,7 @@ cjkq.alert=function(m,cls)
 	e=document.querySelector(".cjkq .alertDialog");
 	if(!e)
 	{
-		let s,a,b,c,p;
+		let s,a,b,c;
 		e=document.createElement('dialog');
 		e.classList.add("alertDialog");
 		e.classList.add(cls?cls:"neutral");
@@ -302,8 +311,7 @@ cjkq.alert=function(m,cls)
 		s+="<button value='OK'>OK</button>";
 		s+="</form>";
 		e.innerHTML=s;
-		p=document.querySelector(".cjkq");
-		p.after(e);
+		document.querySelector(".cjkq").appendChild(e);
 	}
 	e.querySelector('.message').innerHTML=m;
 	e.showModal();
@@ -330,16 +338,14 @@ cjkq.refreshAll=function()
 cjkq.init=function(dicoName)
 {
 	let e;
-	cjkq.params=cjkq.getParams();
+	cjkq.params=cjkq.getStore();
 	cjkq.selected={character:null,transcription:null,translation:null};
 	if(dicoName)
 	{
-		if(cjkq.params.sourceLang=="zh") cjkq.params.zhDicoName=dicoName;
-		else cjkq.params.jaDicoName=dicoName;
-		cjkq.setParams(cjkq.params);
+		cjkq.params[cjkq.params.sourceLang+"DicoName"]=dicoName;
+		cjkq.setStore(cjkq.params);
 	}
-	if(cjkq.params.sourceLang=="zh") cjkq.dicoName=cjkq.params.zhDicoName
-	else cjkq.dicoName=cjkq.params.jaDicoName;
+	cjkq.dicoName=cjkq.params[cjkq.params.sourceLang+"DicoName"];
 	if(cjkq.timer) clearInterval(cjkq.timer);
 	cjkq.timer=0;
 	cjkq.reordered=0;
@@ -363,3 +369,17 @@ cjkq.stop=function(dicoName)
 {
 	cjkq.init(dicoName);
 };
+cjkq.checkStore=function()
+{
+	let p=cjkq.getStore();
+	if(!p) p={};
+	if(!p.reorderAtEnd) p.reorderAtEnd="0";
+	if(!p.kmax) p.kmax="10";
+	if(!p.timePerChar) p.timePerChar="10";
+	if(!p.sourceLang) p.sourceLang="ja";
+	if(!p.targetLang) p.targetLang="en";
+	if(!p.jaDicoName) p.jaDicoName="G1";
+	if(!p.zhDicoName) p.zhDicoName="NHSK1";
+	cjkq.setStore(p);
+};
+cjkq.checkStore();
