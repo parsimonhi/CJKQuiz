@@ -73,7 +73,7 @@ function setFr()
 function doOKSettings()
 {
 	var e=document.querySelector(".settingsDialog");
-	cjkq.setParamToStore("kmax",e.querySelector('.numOfChars').value);
+	cjkq.setParamToStore("numOfChars",e.querySelector('.numOfChars').value);
 	cjkq.setParamToStore("timePerChar",e.querySelector('.timePerChar').value);
 	cjkq.setParamToStore("reorderAtEnd",e.querySelector('.reorderAtEnd').checked?"1":"0");
 	cjkq.start('');
@@ -106,7 +106,7 @@ function doSettings()
 		document.querySelector(".cjkq").appendChild(e);
 	}
 	e.querySelector('.reorderAtEnd').checked=(cjkq.params.reorderAtEnd=="1");
-	e.querySelector('.numOfChars').value=cjkq.params.kmax;
+	e.querySelector('.numOfChars').value=cjkq.params.numOfChars;
 	e.querySelector('.timePerChar').value=cjkq.params.timePerChar;
 	e.showModal();
 }

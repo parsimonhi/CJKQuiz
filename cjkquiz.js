@@ -53,20 +53,20 @@ cjkq.shuffle=function(a)
 cjkq.getSome=function(a)
 {
 	let b=[],c=[],d=[],k,kmax=a.length;
-	cjkq.kmax=cjkq.params.kmax?parseInt(cjkq.params.kmax+"",10):10;
-	if(cjkq.kmax>kmax) cjkq.kmax=kmax;
+	cjkq.numOfChars=cjkq.params.numOfChars?parseInt(cjkq.params.numOfChars+"",10):10;
+	if(cjkq.numOfChars>kmax) cjkq.numOfChars=kmax;
 	cjkq.timePerChar=cjkq.params.timePerChar?parseInt(cjkq.params.timePerChar+"",10):10;
-	cjkq.ijmax=cjkq.kmax*3;
-	cjkq.initialTime=cjkq.kmax*cjkq.timePerChar;
+	cjkq.ijmax=cjkq.numOfChars*3;
+	cjkq.initialTime=cjkq.numOfChars*cjkq.timePerChar;
 	for(k=0;k<kmax;k++) b[k]=a[k]; // otherwise a could be modified?
-	for(k=0;k<cjkq.kmax;k++)
+	for(k=0;k<cjkq.numOfChars;k++)
 	{
-		z=Math.floor(Math.random() * b.length);
+		z=Math.floor(Math.random()*b.length);
 		c[k]=b[z];
 		b.splice(z, 1);
 	}
 	cjkq.chars=c;
-	for(k=0;k<cjkq.kmax;k++)
+	for(k=0;k<cjkq.numOfChars;k++)
 	{
 		d[k*3]=[k,c[k][0],"character",c[k][4]?c[k][4]:null];
 		d[k*3+1]=[k,c[k][1],"transcription"];
@@ -164,7 +164,7 @@ cjkq.doIt=function(ev)
 				}
 				cjkq.selected={character:null,transcription:null,translation:null};
 				cjkq.show();
-				if(cjkq.answers>=cjkq.kmax)
+				if(cjkq.answers>=cjkq.numOfChars)
 				{
 					let s;
 					cjkq.stopped=1;
@@ -318,7 +318,7 @@ cjkq.alert=function(m,cls)
 }
 cjkq.compute=function()
 {
-	return Math.round((20/(2*cjkq.kmax))*Math.max(0,(cjkq.answers*2-cjkq.errors)))+"/20";
+	return Math.round((20/(2*cjkq.numOfChars))*Math.max(0,(cjkq.answers*2-cjkq.errors)))+"/20";
 };
 cjkq.refreshAll=function()
 {
@@ -374,7 +374,7 @@ cjkq.checkStore=function()
 	let p=cjkq.getStore();
 	if(!p) p={};
 	if(!p.reorderAtEnd) p.reorderAtEnd="0";
-	if(!p.kmax) p.kmax="10";
+	if(!p.numOfChars) p.numOfChars="10";
 	if(!p.timePerChar) p.timePerChar="10";
 	if(!p.sourceLang) p.sourceLang="ja";
 	if(!p.targetLang) p.targetLang="en";
