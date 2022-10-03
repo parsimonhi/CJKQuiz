@@ -10,6 +10,7 @@ body
 	margin:0 auto;
 	padding:0;
 	text-align:center;
+	list-style-type:none;
 }
 .selector.settings img
 {
@@ -21,7 +22,6 @@ body
 	display:inline-block;
 	margin:0;
 	padding:0;
-	list-style-type:none;
 }
 .selector.settings li button,
 .selector.action li button

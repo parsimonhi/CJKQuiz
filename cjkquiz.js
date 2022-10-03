@@ -113,6 +113,7 @@ cjkq.doIt=function(ev)
 	let e1=ev.target;
 	if(e1)
 	{
+		if(cjkq.stopped) cjkq.restart();
 		if(!e1.classList.contains("good"))
 		{
 			let kind=e1.getAttribute("data-t"),e2=cjkq.selected[kind];
@@ -217,7 +218,7 @@ cjkq.addPad=function(s)
 	cjkq.errors=0;
 	cjkq.show();
 	cjkq.timer=setInterval(cjkq.refreshAll,1000);
-	cjkq.startDate=new Date();
+	// cjkq.startDate=new Date();
 };
 cjkq.addSomeSolution=function(cls)
 {
@@ -302,11 +303,12 @@ cjkq.alert=function(m,cls)
 	e=document.querySelector(".cjkq .alertDialog");
 	if(!e)
 	{
-		let s,a,b,c;
+		let s="",a,b,c;
 		e=document.createElement('dialog');
 		e.classList.add("alertDialog");
 		e.classList.add(cls?cls:"neutral");
-		s="<form method='dialog'>";
+		s+="<h1>CJKQuiz</h1>";
+		s+="<form method='dialog'>";
 		s+="<p class='message'>"+m+"</p>";
 		s+="<button value='OK'>OK</button>";
 		s+="</form>";
@@ -357,6 +359,7 @@ cjkq.init=function(dicoName)
 		e.classList.add("cjkq");
 		cjkq.js.parentNode.insertBefore(e,cjkq.js.nextSibling);
 	}
+	cjkq.js.parentNode.scrollIntoView();
 };
 cjkq.start=function(dicoName)
 {
@@ -365,9 +368,17 @@ cjkq.start=function(dicoName)
 	.then(r=>r.json())
 	.then(r=>cjkq.addPad(cjkq.makePad(r)));
 };
-cjkq.stop=function(dicoName)
+cjkq.stop=function()
 {
-	cjkq.init(dicoName);
+	cjkq.stopped=1;
+};
+cjkq.restart=function()
+{
+	if(cjkq.stopped)
+	{
+		cjkq.stopped=0;
+		cjkq.timer=setInterval(cjkq.refreshAll,1000);
+	}
 };
 cjkq.checkStore=function()
 {
