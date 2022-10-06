@@ -7,8 +7,6 @@
 <link href="_css/style.css" rel="stylesheet" type="text/css">
 <link href="_css/cjkquiz.css" rel="stylesheet" type="text/css">
 <title>CJKQuiz</title>
-<style>
-</style>
 <script>
 function setZh()
 {
@@ -73,9 +71,19 @@ function setFr()
 function doOKSettings()
 {
 	var e=document.querySelector(".settingsDialog");
-	cjkq.setParamToStore("numOfChars",e.querySelector('.numOfChars').value);
-	cjkq.setParamToStore("timePerChar",e.querySelector('.timePerChar').value);
-	cjkq.setParamToStore("reorderAtEnd",e.querySelector('.reorderAtEnd').checked?"1":"0");
+	cjkq.setParamToStore("numOfChars",e.querySelector('.numOfChars input').value);
+	cjkq.setParamToStore("timePerChar",e.querySelector('.timePerChar input').value);
+	cjkq.setParamToStore("reorderAtEnd",e.querySelector('.reorderAtEnd input').checked?"1":"0");
+	cjkq.setParamToStore("addSolutionAtEnd",e.querySelector('.addSolutionAtEnd input').checked?"1":"0");
+	function getRadioValue(name)
+	{
+		let list=document.getElementsByName(name);
+			for(let k=0;k<list.length;k++)
+				if (list[k].checked) return list[k].value;
+		return cjkq.params[name]; // change nothing
+    }
+	cjkq.setParamToStore("displayMode",getRadioValue("displayMode"));
+	cjkq.setParamToStore("tileOrder",getRadioValue("tileOrder"));
 	cjkq.start('');
 }
 function doSettings()
@@ -84,17 +92,35 @@ function doSettings()
 	e=document.querySelector(".cjkq .settingsDialog");
 	if(!e)
 	{
-		let s,a,b,c;
+		let s,a;
 		e=document.createElement('dialog');
 		e.classList.add("settingsDialog");
 		s="<form method='dialog'>";
 		s+="<h1>CJKQuiz</h1>";
+		a=(cjkq.params.targetLang=="fr")?"Nombre de caractères :":"Number of chars:";
+		s+="<label class='numOfChars'><span>"+a+"</span><input type='number' min='1' max='30'></label>";
+		a=(cjkq.params.targetLang=="fr")?"Temps par caractère :":"Time per char:";
+		s+="<label class='timePerChar'><span>"+a+"</span><input type='number' min='1' max='30'></label>";
+		s+="<fieldset>";
+		a=(cjkq.params.targetLang=="fr")?"Disposition initiale des tuiles":"Initial tile layout";
+		s+="<legend>"+a+"</legend>";
+		a=(cjkq.params.targetLang=="fr")?"Toutes mélangées":"All shuffled";
+		s+="<label class='tileOrder'><input type='radio' name='tileOrder' value='shuffled'><span>"+a+"</span></label>";
+		a=(cjkq.params.targetLang=="fr")?"Mélangées par colonne":"Shuffled by column";
+		s+="<label class='tileOrder'><input type='radio' name='tileOrder' value='byColumn'><span>"+a+"</span></label>";
+		s+="</fieldset>";
 		a=(cjkq.params.targetLang=="fr")?"Réordonner à la fin":"Reorder at end";
-		s+="<label><input class='reorderAtEnd' type='checkbox'><span>"+a+"</span></label>";
-		b=(cjkq.params.targetLang=="fr")?"Nombre de caractères :":"Number of chars:";
-		s+="<label><span>"+b+"</span><input class='numOfChars' type='number' min='1' max='30'></label>";
-		c=(cjkq.params.targetLang=="fr")?"Temps par caractère :":"Time per char:";
-		s+="<label><span>"+c+"</span><input class='timePerChar' type='number' min='1' max='30'></label>";
+		s+="<label class='reorderAtEnd'><input type='checkbox'><span>"+a+"</span></label>";
+		a=(cjkq.params.targetLang=="fr")?"Numéros sur les solutions":"Numbers on the solutions";
+		s+="<label class='addSolutionAtEnd'><input type='checkbox'><span>"+a+"</span></label>";
+		s+="<fieldset>";
+		a=(cjkq.params.targetLang=="fr")?"Mode d'affichage":"Display mode";
+		s+="<legend>"+a+"</legend>";
+		a=(cjkq.params.targetLang=="fr")?"Sombre":"Dark";
+		s+="<label class='displayMode'><input type='radio' name='displayMode' value='dark'><span>"+a+"</span></label>";
+		a=(cjkq.params.targetLang=="fr")?"Clair":"Light";
+		s+="<label class='displayMode'><input type='radio' name='displayMode' value='light'><span>"+a+"</span></label>";
+		s+="</fieldset>";
 		s+="<button value='OK'>OK</button>";
 		s+="<button value='cancel'>"+((cjkq.params.targetLang=="fr")?"Annuler":"Cancel")+"</button>";
 		s+="</form>";
@@ -105,9 +131,18 @@ function doSettings()
 			});
 		document.querySelector(".cjkq").appendChild(e);
 	}
-	e.querySelector('.reorderAtEnd').checked=(cjkq.params.reorderAtEnd=="1");
-	e.querySelector('.numOfChars').value=cjkq.params.numOfChars;
-	e.querySelector('.timePerChar').value=cjkq.params.timePerChar;
+	e.querySelector('.numOfChars input').value=cjkq.params.numOfChars;
+	e.querySelector('.timePerChar input').value=cjkq.params.timePerChar;
+	e.querySelector('.reorderAtEnd input').checked=(cjkq.params.reorderAtEnd=="1");
+	e.querySelector('.addSolutionAtEnd input').checked=(cjkq.params.addSolutionAtEnd=="1");
+	function setRadioValue(name,value)
+	{
+		let list=document.getElementsByName(name);
+			for(let k=0;k<list.length;k++)
+				list[k].checked=(list[k].value==value);
+    }
+    setRadioValue("displayMode",cjkq.params.displayMode);
+    setRadioValue("tileOrder",cjkq.params.tileOrder);
 	e.showModal();
 }
 function doReorder()

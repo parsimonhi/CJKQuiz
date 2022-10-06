@@ -3,6 +3,8 @@ body
 	background:#fff;
 	font-family:sans-serif;
 	text-align:center;
+	margin:0;
+	padding:0.25rem;
 }
 .selector
 {
@@ -32,26 +34,39 @@ body
 	padding:0;
 }
 .selector.ja li button,
-.selector.zh li button,
-.settingsDialog button
+.selector.zh li button
 {
 	font-size:1em;
 	margin:0.25em;
 	min-width:2em;
 }
-.settingsDialog label
+.settingsDialog
+{
+	font-size:1em;
+}
+.settingsDialog fieldset,
+.settingsDialog label,
+.settingsDialog button
+{
+	margin:0.25em;
+}
+.settingsDialog .numOfChars,
+.settingsDialog .timePerChar
 {
 	display:flex;
 	justify-content:space-between;
-	margin:0.25em;
-	text-align:left;
+}
+.settingsDialog .reorderAtEnd,
+.settingsDialog .addSolutionAtEnd,
+.settingsDialog .displayMode,
+.settingsDialog .tileOrder
+{
+	display:flex;
+	justify-content:start;
 }
 .settingsDialog label span
 {
 	margin:0 0.25em;
 }
-.settingsDialog label:first-of-type
-{
-	justify-content:start;
-}
+
 [onclick] {cursor:pointer;}
