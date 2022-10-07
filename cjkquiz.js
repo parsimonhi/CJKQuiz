@@ -232,6 +232,7 @@ cjkq.addPad=function(s)
 	cjkq.errors=0;
 	cjkq.show();
 	cjkq.timer=setInterval(cjkq.refreshAll,1000);
+	cjkq.js.parentNode.scrollIntoView();
 };
 cjkq.addSomeSolution=function(cls)
 {
@@ -396,7 +397,6 @@ cjkq.init=function(dicoName)
 	e.classList.remove(...e.classList);
 	e.classList.add("cjkq");
 	e.classList.add(cjkq.params.displayMode);
-	cjkq.js.parentNode.scrollIntoView();
 };
 cjkq.start=function(dicoName)
 {
