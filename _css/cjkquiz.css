@@ -127,6 +127,14 @@
     justify-content:center;
     overflow:hidden;
 }
+.cjkq .tile:hover::after
+{
+	content:attr(data-v);
+	position:absolute;
+	right:0;
+	bottom:0;
+	z-index:1000;
+}
 .cjkq .tile:hover:not(:empty)
 {
 	cursor:pointer;

@@ -53,7 +53,9 @@ function setEn()
 	flagEn.style.display="inline-block";
 	flagFr.style.display="none";
 	settingsIcon.setAttribute("title","Settings");
+	settingsIcon.setAttribute("alt","Settings Icon");
 	reorderIcon.setAttribute("title","Reorder/Unorder");
+	reorderIcon.setAttribute("alt","Reorder Icon");
 	cjkq.setParamToStore("targetLang","en");
 }
 function setFr()
@@ -65,10 +67,12 @@ function setFr()
 	flagEn.style.display="none";
 	flagFr.style.display="inline-block";
 	settingsIcon.setAttribute("title","Paramétrage");
+	settingsIcon.setAttribute("alt","Icône Paramétrage");
 	reorderIcon.setAttribute("title","Réordonner/Mélanger");
+	reorderIcon.setAttribute("alt","Icône Réordonner/Mélanger");
 	cjkq.setParamToStore("targetLang","fr");
 }
-function doOKSettings()
+function doCjkqOKSettings()
 {
 	var e=document.querySelector(".settingsDialog");
 	cjkq.setParamToStore("numOfChars",e.querySelector('.numOfChars input').value);
@@ -86,7 +90,7 @@ function doOKSettings()
 	cjkq.setParamToStore("tileOrder",getRadioValue("tileOrder"));
 	cjkq.start('');
 }
-function doSettings()
+function doCjkqSettings()
 {
 	var e;
 	e=document.querySelector(".cjkq .settingsDialog");
@@ -127,7 +131,7 @@ function doSettings()
 		e.innerHTML=s;
 		e.addEventListener('close',function()
 			{
-				if(this.returnValue=="OK") doOKSettings();
+				if(this.returnValue=="OK") doCjkqOKSettings();
 			});
 		document.querySelector(".cjkq").appendChild(e);
 	}
@@ -145,7 +149,7 @@ function doSettings()
     setRadioValue("tileOrder",cjkq.params.tileOrder);
 	e.showModal();
 }
-function doReorder()
+function doCjkqReorder()
 {
 	if(cjkq.reordered) cjkq.unorder();
 	else cjkq.reorder();
@@ -155,12 +159,12 @@ function doReorder()
 <body>
 <main>
 <ul class="selector settings">
-<li class="flag zh"><button onclick="setJa();cjkq.start('');"><img alt="中国国旗" src="_img/chn23.svg" width="48" height="32"></button></li>
-<li class="flag ja"><button onclick="setZh();cjkq.start('');"><img alt="日本の国旗" src="_img/jap23.svg" width="48" height="32"></button></li>
-<li class="icon"><button onclick="doSettings();"><img class="settingsIcon" alt="Settings" title="Settings" src="_img/settings.svg" width="32" height="32"></button></li>
-<li class="icon"><button onclick="doReorder()"><img class="reorderIcon" alt="Reorder" title="Reorder" src="_img/reorder.svg" width="32" height="32"></button></li>
-<li class="flag en"><button onclick="setFr();cjkq.start('');"><img alt="British flag" src="_img/gbr23.svg" width="48" height="32"></button></li>
-<li class="flag fr"><button onclick="setEn();cjkq.start('');"><img alt="Drapeau français" src="_img/fra23.svg" width="48" height="32"></button></li>
+<li class="flag zh"><button onclick="setJa();cjkq.start('');"><img alt="中国国旗" title="中国话" src="_img/chn23.svg" width="48" height="32"></button></li>
+<li class="flag ja"><button onclick="setZh();cjkq.start('');"><img alt="日本の国旗" title="日本語" src="_img/jap23.svg" width="48" height="32"></button></li>
+<li class="icon"><button onclick="doCjkqSettings();"><img class="settingsIcon" alt="Settings Icon" title="Settings" src="_img/settings.svg" width="32" height="32"></button></li>
+<li class="icon"><button onclick="doCjkqReorder()"><img class="reorderIcon" alt="Reorder Icon" title="Reorder" src="_img/reorder.svg" width="32" height="32"></button></li>
+<li class="flag en"><button onclick="setFr();cjkq.start('');"><img alt="British flag" title="English" src="_img/gbr23.svg" width="48" height="32"></button></li>
+<li class="flag fr"><button onclick="setEn();cjkq.start('');"><img alt="Drapeau français" title="Français" src="_img/fra23.svg" width="48" height="32"></button></li>
 </ul>
 <ul class="selector ja">
 	<!--<li><button onclick="cjkq.start('TestJa');">Test</button></li>-->

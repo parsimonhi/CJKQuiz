@@ -1,12 +1,17 @@
 cjkq={}
 cjkq.copyright="<a href='https://github.com/parsimonhi/CJKQuiz'>CJKQuiz</a> Copyright 2015-2022 FM&SH";
+cjkq.i18n=
+{
+	"Game over!":{fr:"Terminé !"},
+	"Level: ":{fr:"Niveau : "},
+	"Answers: ":{fr:"Réponses : "},
+	"Score: ":{fr:"Note : "},
+	"Errors: ":{fr:"Erreurs : "},
+	"Result":{fr:"Résultat"},
+	"Expired time!":{fr:"Temps expiré !"},
+	"Data not available!":{"fr":"Données non disponibles !"}
+};
 cjkq.instructions={en:"Select a character, its prononciation and its meaning.",fr:"Sélectionnez un caractère, sa prononciation et sa signification."};
-cjkq.levelLabel={en:"Level: ",fr:"Niveau : "};
-cjkq.answersLabel={en:"Answers: ",fr:"Réponses : "};
-cjkq.errorsLabel={en:"Errors: ",fr:"Erreurs : "};
-cjkq.scoreLabel={en:"Score: ",fr:"Note : "};
-cjkq.expiredTimeLabel={en:"Expired time!",fr:"Temps expiré !"};
-cjkq.gameOverLabel={en:"Game over!",fr:"Terminé !"};
 cjkq.js=document.scripts[document.scripts.length-1]; // current js script
 cjkq.deplonk=function()
 {
@@ -38,6 +43,13 @@ cjkq.setParamToStore=function(a,v)
 	let p=JSON.parse(localStorage.getItem('cjkq'));
 	p[a]=v;
 	localStorage.setItem('cjkq',JSON.stringify(p));
+};
+cjkq.getI18n=function(s)
+{
+	let m;
+	if((cjkq.params.targetLang=="en")||!cjkq.i18n[s]||!cjkq.i18n[s][cjkq.params.targetLang]) m=s;
+	else m=cjkq.i18n[s][cjkq.params.targetLang];
+	return m;
 };
 cjkq.shuffle=function(a)
 {
@@ -91,10 +103,10 @@ cjkq.getSome=function(a)
 cjkq.show=function()
 {
 	document.querySelector(".cjkq .time").innerHTML=cjkq.time;
-	document.querySelector(".cjkq .level").innerHTML=cjkq.levelLabel[cjkq.params.targetLang]+cjkq.dicoName;
-	document.querySelector(".cjkq .answers").innerHTML=cjkq.answersLabel[cjkq.params.targetLang]+cjkq.answers;
-	document.querySelector(".cjkq .errors").innerHTML=cjkq.errorsLabel[cjkq.params.targetLang]+cjkq.errors;
-	document.querySelector(".cjkq .score").innerHTML=cjkq.scoreLabel[cjkq.params.targetLang]+cjkq.compute();
+	document.querySelector(".cjkq .level").innerHTML=cjkq.getI18n("Level: ")+cjkq.dicoName;
+	document.querySelector(".cjkq .answers").innerHTML=cjkq.getI18n("Answers: ")+cjkq.answers;
+	document.querySelector(".cjkq .errors").innerHTML=cjkq.getI18n("Errors: ")+cjkq.errors;
+	document.querySelector(".cjkq .score").innerHTML=cjkq.getI18n("Score: ")+cjkq.compute();
 };
 cjkq.cleanNumbers=function()
 {
@@ -181,12 +193,13 @@ cjkq.doIt=function(ev)
 				cjkq.show();
 				if(cjkq.answers>=cjkq.numOfChars)
 				{
-					let s;
+					let s,title;
 					cjkq.stopped=1;
 					cjkq.finalCut();
-					s=cjkq.gameOverLabel[cjkq.params.targetLang]+"<br>";
-					s+=cjkq.scoreLabel[cjkq.params.targetLang]+cjkq.compute();
-					cjkq.alert(s,"good");
+					s=cjkq.getI18n("Game over!")+"<br>";
+					s+=cjkq.getI18n("Score: ")+cjkq.compute();
+					title=cjkq.getI18n("Result");
+					cjkq.alert(s,title,"good");
 				}
 			}
 		}
@@ -203,10 +216,11 @@ cjkq.makePad=function(dico)
 		let x=d[ij];
 		if(x)
 		{
-			let t=((x[2]=="character")&&x[3])?x[3]:null;
+			let v=((x[2]=="character")&&x[3])?x[3]:null;
 			let l=(x[2]=="character")?cjkq.params.sourceLang:null;
 			s+="<button class='tile' onclick='cjkq.doIt(event)'";
-			s+=(l?" lang='"+l+"'":"")+(t?" title='"+t+"'":"");
+			s+=(l?" lang='"+l+"'":"");
+			s+=(v?" data-v='"+v+"'":"");
 			s+=" data-t='"+x[2]+"' data-k='"+x[0]+"'>";
 			s+=x[1];
 			s+="</button>";
@@ -333,7 +347,7 @@ cjkq.finalCut=function()
 	if(cjkq.params.reorderAtEnd=="1")
 		cjkq.reorder();
 };
-cjkq.alert=function(m,cls)
+cjkq.alert=function(m,title="CJKQuiz",cls="neutral")
 {
 	var e;
 	e=document.querySelector(".cjkq .alertDialog");
@@ -342,8 +356,8 @@ cjkq.alert=function(m,cls)
 		let s="",a,b,c;
 		e=document.createElement('dialog');
 		e.classList.add("alertDialog");
-		e.classList.add(cls?cls:"neutral");
-		s+="<h1>CJKQuiz</h1>";
+		e.classList.add(cls);
+		s+="<h1>"+title+"</h1>";
 		s+="<form method='dialog'>";
 		s+="<p class='message'>"+m+"</p>";
 		s+="<button value='OK'>OK</button>";
@@ -365,12 +379,13 @@ cjkq.refreshAll=function()
 	cjkq.show();
 	if(cjkq.time<=0)
 	{
-		let s;
+		let s,title;
 		cjkq.stopped=1;
 		cjkq.finalCut();
-		s=cjkq.expiredTimeLabel[cjkq.params.targetLang]+"<br>";
-		s+=cjkq.scoreLabel[cjkq.params.targetLang]+cjkq.compute();
-		cjkq.alert(s,"bad");
+		s=cjkq.getI18n("Expired time!")+"<br>";
+		s+=cjkq.getI18n("Score: ")+cjkq.compute();
+		title=cjkq.getI18n("Result");
+		cjkq.alert(s,title,"bad");
 	}
 };
 cjkq.init=function(dicoName)
@@ -403,7 +418,21 @@ cjkq.start=function(dicoName)
 	cjkq.init(dicoName);
 	fetch("_json/"+cjkq.dicoName+".json")
 	.then(r=>r.json())
-	.then(r=>cjkq.addPad(cjkq.makePad(r)));
+	.catch(error =>
+	{
+		console.log("failed to get "+cjkq.dicoName+" json file!");
+		return false;
+	})
+	.then(r=>
+	{
+		if(r) cjkq.addPad(cjkq.makePad(r))
+		else
+		{
+			cjkq.error=true;
+			cjkq.alert(cjkq.getI18n("Data not available!"));
+			return false;
+		}
+	});
 };
 cjkq.stop=function()
 {
