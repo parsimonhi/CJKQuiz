@@ -127,13 +127,26 @@
     justify-content:center;
     overflow:hidden;
 }
-.cjkq .tile:hover::after
+.cjkq .tile:hover:after
 {
 	content:attr(data-v);
+	font-size:0.5em;
+	padding:0.125em;
+	color:#000;
+	background:#ffc;
+	box-shadow:0 2px 5px #999;
 	position:absolute;
-	right:0;
-	bottom:0;
 	z-index:1000;
+	display:block;
+	box-sizing:border-box;
+	white-space:nowrap;
+	pointer-events:none;
+	bottom:10%;
+	right:10%;
+}
+.cjkq .tile:hover:after:empty
+{
+	display:none;
 }
 .cjkq .tile:hover:not(:empty)
 {
