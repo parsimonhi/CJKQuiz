@@ -119,6 +119,7 @@
 {
 	background:var(--neutralBackground);
 	position:relative;
+	z-index:1;
 	border:1px solid var(--neutralBorderColor);
 	border-radius:0.25rem;
     min-height:2rem;
@@ -127,14 +128,15 @@
     justify-content:center;
     overflow:hidden;
 }
-.cjkq .tile:hover:after
+.cjkq .tile[data-v]:hover:after
 {
 	content:attr(data-v);
 	font-size:0.5em;
-	padding:0.125em;
+	height:1.5em;
+	line-height:1em;
+	padding:0.25em;
 	color:#000;
 	background:#ffc;
-	box-shadow:0 2px 5px #999;
 	position:absolute;
 	z-index:1000;
 	display:block;
@@ -142,11 +144,7 @@
 	white-space:nowrap;
 	pointer-events:none;
 	bottom:10%;
-	right:10%;
-}
-.cjkq .tile:hover:after:empty
-{
-	display:none;
+	right:5%;
 }
 .cjkq .tile:hover:not(:empty)
 {
