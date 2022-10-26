@@ -136,15 +136,16 @@
 	line-height:1em;
 	padding:0.25em;
 	color:#000;
-	background:#ffc;
+	background:#fff;
 	position:absolute;
 	z-index:1000;
 	display:block;
 	box-sizing:border-box;
 	white-space:nowrap;
-	pointer-events:none;
+	ointer-events:none;
 	bottom:10%;
-	right:5%;
+	right:10%;
+	opacity:0.75;
 }
 .cjkq .tile:hover:not(:empty)
 {

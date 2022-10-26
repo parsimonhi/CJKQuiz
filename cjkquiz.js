@@ -220,7 +220,7 @@ cjkq.makePad=function(dico)
 			let l=(x[2]=="character")?cjkq.params.sourceLang:null;
 			s+="<button class='tile' onclick='cjkq.doIt(event)'";
 			s+=(l?" lang='"+l+"'":"");
-			// if(x[2]=="character") s+=(v?" data-v='"+v+"'":"");
+			if(x[2]=="character") s+=(v?" data-v='"+v+"'":"");
 			s+=" data-t='"+x[2]+"' data-k='"+x[0]+"'>";
 			s+=x[1];
 			s+="</button>";
