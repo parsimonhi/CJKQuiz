@@ -139,11 +139,11 @@ cjkq.doIt=function(ev)
 	let e1=ev.target;
 	if(e1)
 	{
+		if(e1.tagName.toUpperCase()=="SPAN") e1=e1.parentNode;
 		if(cjkq.stopped) cjkq.restart();
 		if(!e1.classList.contains("good"))
 		{
 			let kind=e1.getAttribute("data-t"),e2=cjkq.selected[kind];
-			
 			if(e2)
 			{
 				e2.classList.remove("selected");
@@ -155,13 +155,12 @@ cjkq.doIt=function(ev)
 				e1.classList.add("selected");
 				cjkq.selected[kind]=e1;
 			}
-			
 			if(cjkq.selected.character&&cjkq.selected.transcription&&cjkq.selected.translation)
 			{
 				let a,b,c,k,km,f="bad";
-				a=cjkq.selected.character.innerHTML;
-				b=cjkq.selected.transcription.innerHTML;
-				c=cjkq.selected.translation.innerHTML;
+				a=cjkq.selected.character.getAttribute("data-c");
+				b=cjkq.selected.transcription.getAttribute("data-c");
+				c=cjkq.selected.translation.getAttribute("data-c");
 				km=cjkq.chars.length;
 				for(k=0;k<km;k++)
 				{
@@ -220,9 +219,12 @@ cjkq.makePad=function(dico)
 			let l=(x[2]=="character")?cjkq.params.sourceLang:null;
 			s+="<button class='tile' onclick='cjkq.doIt(event)'";
 			s+=(l?" lang='"+l+"'":"");
+			s+=" data-t='"+x[2]+"' data-c='"+x[1]+"' data-k='"+x[0]+"'>";
+			s+="<span";
 			if(x[2]=="character") s+=(v?" data-v='"+v+"'":"");
-			s+=" data-t='"+x[2]+"' data-k='"+x[0]+"'>";
+			s+=">";
 			s+=x[1];
+			s+="</span>";
 			s+="</button>";
 		}
 		else s+="<div class='tile'></div>";

@@ -128,7 +128,7 @@
     justify-content:center;
     overflow:hidden;
 }
-.cjkq .tile[data-v]:hover:after
+.cjkq .tile span[data-v]:hover:after
 {
 	content:attr(data-v);
 	font-size:0.5em;
@@ -142,7 +142,6 @@
 	display:block;
 	box-sizing:border-box;
 	white-space:nowrap;
-	ointer-events:none;
 	bottom:10%;
 	right:10%;
 	opacity:0.75;
