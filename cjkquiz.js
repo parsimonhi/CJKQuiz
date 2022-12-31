@@ -1,5 +1,7 @@
 cjkq={}
-cjkq.copyright="<a href='https://github.com/parsimonhi/CJKQuiz'>CJKQuiz</a> Copyright 2015-2022 FM&SH";
+cjkq.copyright="<a href='https://github.com/parsimonhi/CJKQuiz'>CJKQuiz</a>";
+cjkq.copyright+=" Copyright 2015-2022 FM&SH";
+cjkq.history=[]; // saves bandwidth and useful if the server is temporarily　unreachable
 cjkq.i18n=
 {
 	"Game over!":{fr:"Terminé !"},
@@ -9,9 +11,12 @@ cjkq.i18n=
 	"Errors: ":{fr:"Erreurs : "},
 	"Result":{fr:"Résultat"},
 	"Expired time!":{fr:"Temps expiré !"},
-	"Data not available!":{"fr":"Données non disponibles !"}
+	"Server unreachable!":{fr:"Serveur inaccessible !"},
+	"Data not available!":{fr:"Données non disponibles !"}
 };
-cjkq.instructions={en:"Select a character, its prononciation and its meaning.",fr:"Sélectionnez un caractère, sa prononciation et sa signification."};
+cjkq.instructions={};
+cjkq.instructions.en="Select a character, its prononciation and its meaning.";
+cjkq.instructions.fr="Sélectionnez un caractère, sa prononciation et sa signification.";
 cjkq.js=document.scripts[document.scripts.length-1]; // current js script
 cjkq.deplonk=function()
 {
@@ -46,10 +51,11 @@ cjkq.setParamToStore=function(a,v)
 };
 cjkq.getI18n=function(s)
 {
-	let m;
-	if((cjkq.params.targetLang=="en")||!cjkq.i18n[s]||!cjkq.i18n[s][cjkq.params.targetLang]) m=s;
-	else m=cjkq.i18n[s][cjkq.params.targetLang];
-	return m;
+	// return a translation of s in cjkq.params.targetLang if it exists
+	// else return s
+	if(cjkq.i18n[s]&&cjkq.i18n[s][cjkq.params.targetLang])
+		return cjkq.i18n[s][cjkq.params.targetLang];
+	return s;
 };
 cjkq.shuffle=function(a)
 {
@@ -62,10 +68,16 @@ cjkq.shuffle=function(a)
 	}
 	return a;
 };
+cjkq.getDataOrder=function()
+{
+	if(cjkq.params.tileOrder.match(/^( ?(character|transcription|translation)){3}$/))
+		return cjkq.params.tileOrder.split(" ");
+	else return ["character","transcription","translation"];
+};
 cjkq.getSome=function(a)
 {
-	let b=[],c=[],d=[],k,kmax=a.length;
-	let d1=[],d2=[],d3=[];
+	let b=[],c=[],d=[],k,kmax=a.length,dataOrder;
+	let s={character:[],transcription:[],translation:[]};
 	cjkq.numOfChars=cjkq.params.numOfChars?parseInt(cjkq.params.numOfChars+"",10):10;
 	if(cjkq.numOfChars>kmax) cjkq.numOfChars=kmax;
 	cjkq.timePerChar=cjkq.params.timePerChar?parseInt(cjkq.params.timePerChar+"",10):10;
@@ -74,28 +86,33 @@ cjkq.getSome=function(a)
 	for(k=0;k<kmax;k++) b[k]=a[k]; // otherwise a could be modified?
 	for(k=0;k<cjkq.numOfChars;k++)
 	{
+		let n,z;
 		z=Math.floor(Math.random()*b.length);
 		c[k]=b[z];
+		n=(cjkq.params.targetLang=="fr")?3:2;
+		c[k][n]=c[k][n].charAt(0).toUpperCase()+c[k][n].slice(1);
 		b.splice(z,1);
 	}
 	cjkq.chars=c;
+	dataOrder=cjkq.getDataOrder();
 	for(k=0;k<cjkq.numOfChars;k++)
 	{
-		d1[k]=[k,c[k][0],"character",c[k][4]?c[k][4]:null];
-		d2[k]=[k,c[k][1],"transcription"];
-		d3[k]=[k,c[k][(cjkq.params.targetLang=="fr")?3:2],"translation"];
+		
+		s.character[k]=[k,c[k][0],"character",c[k][4]?c[k][4]:null];
+		s.transcription[k]=[k,c[k][1],"transcription"];
+		s.translation[k]=[k,c[k][(cjkq.params.targetLang=="fr")?3:2],"translation"];
 	}
 	if(cjkq.params.tileOrder!="shuffled")
 	{
-		d1=cjkq.shuffle(d1);
-		d2=cjkq.shuffle(d2);
-		d3=cjkq.shuffle(d3);
+		s.character=cjkq.shuffle(s.character);
+		s.transcription=cjkq.shuffle(s.transcription);
+		s.translation=cjkq.shuffle(s.translation);
 	}
 	for(k=0;k<cjkq.numOfChars;k++)
 	{
-		d[k*3]=d1[k];
-		d[k*3+1]=d2[k];
-		d[k*3+2]=d3[k];
+		d[k*3]=s[dataOrder[0]][k];
+		d[k*3+1]=s[dataOrder[1]][k];
+		d[k*3+2]=s[dataOrder[2]][k];
 	}
 	if(cjkq.params.tileOrder=="shuffled") return cjkq.shuffle(d);
 	return d;
@@ -110,11 +127,11 @@ cjkq.show=function()
 };
 cjkq.cleanNumbers=function()
 {
-	// when several tiles have the same value ...
-	let x,y,z,e;
+	let x,y,z,e,a;
 	x=-(-cjkq.selected.character.getAttribute("data-k"));
 	y=-(-cjkq.selected.transcription.getAttribute("data-k"));
 	z=-(-cjkq.selected.translation.getAttribute("data-k"));
+	// when several tiles have the same value, make an appropriate permutation on data-k
 	if(x!=y)
 	{
 		e=document.querySelector("[data-t='transcription'][data-k='"+x+"']");
@@ -131,6 +148,24 @@ cjkq.cleanNumbers=function()
 		{
 			cjkq.selected.translation.setAttribute("data-k",x);
 			e.setAttribute("data-k",z);
+		}
+	}
+	// set data-k of the guessed character to cjkq.answers-1
+	a=cjkq.answers-1;
+	if(x!=a)
+	{
+		let e1,e2,e3;
+		e1=document.querySelector("[data-t='character'][data-k='"+a+"']");
+		e2=document.querySelector("[data-t='transcription'][data-k='"+a+"']");
+		e3=document.querySelector("[data-t='translation'][data-k='"+a+"']");
+		if(e1&&e2&&e3)
+		{
+			cjkq.selected.character.setAttribute("data-k",a);
+			e1.setAttribute("data-k",x);
+			cjkq.selected.transcription.setAttribute("data-k",a);
+			e2.setAttribute("data-k",x);
+			cjkq.selected.translation.setAttribute("data-k",a);
+			e3.setAttribute("data-k",x);
 		}
 	}
 };
@@ -169,6 +204,7 @@ cjkq.doIt=function(ev)
 						&&(c==cjkq.chars[k][(cjkq.params.targetLang=="fr")?3:2]))
 					{
 						f="good";
+						cjkq.answers+=1;
 						cjkq.cleanNumbers();
 						break;
 					}
@@ -181,7 +217,6 @@ cjkq.doIt=function(ev)
 					cjkq.selected.character.classList.add(f);
 					cjkq.selected.transcription.classList.add(f);
 					cjkq.selected.translation.classList.add(f);
-					cjkq.answers+=1;
 				}
 				else
 				{
@@ -292,35 +327,24 @@ cjkq.addSolution=function()
 };
 cjkq.reorder=function()
 {
-	var e,k,kmax,goodChars=[],badChars=[],otherChars=[],allChars,z1=0,z2=0,z3=0;
+	var e,k,kmax,goodChars=[],badChars=[],otherChars=[],allChars;
 	kmax=cjkq.params.numOfChars;
 	for(k=0;k<cjkq.params.numOfChars;k++)
 	{
 		e=document.querySelector(".cjkq .tile[data-k='"+k+"'][data-t='character']");
-		if(e.classList.contains("good"))
-		{
-			goodChars[z1]=k;
-			z1++;
-		}
-		else if(e.classList.contains("bad"))
-		{
-			badChars[z2]=k;
-			z2++;
-		}
-		else
-		{
-			otherChars[z3]=k;
-			z3++;
-		}
+		if(e.classList.contains("good")) goodChars.push(k);
+		else if(e.classList.contains("bad")) badChars.push(k);
+		else otherChars.push(k);
 	}
 	allChars=goodChars.concat(badChars).concat(otherChars);
+	dataOrder=cjkq.getDataOrder();
 	for(k=0;k<cjkq.params.numOfChars;k++)
 	{
-		e=document.querySelector(".cjkq .tile[data-k='"+allChars[k]+"'][data-t='character']");
+		e=document.querySelector(".cjkq .tile[data-k='"+allChars[k]+"'][data-t='"+dataOrder[0]+"']");
 		e.style.order=k*3;
-		e=document.querySelector(".cjkq .tile[data-k='"+allChars[k]+"'][data-t='transcription']");
+		e=document.querySelector(".cjkq .tile[data-k='"+allChars[k]+"'][data-t='"+dataOrder[1]+"']");
 		e.style.order=k*3+1;
-		e=document.querySelector(".cjkq .tile[data-k='"+allChars[k]+"'][data-t='translation']");
+		e=document.querySelector(".cjkq .tile[data-k='"+allChars[k]+"'][data-t='"+dataOrder[2]+"']");
 		e.style.order=k*3+2;
 	}
 	cjkq.reordered=1;
@@ -415,26 +439,46 @@ cjkq.init=function(dicoName)
 	e.classList.add("cjkq");
 	e.classList.add(cjkq.params.displayMode);
 };
+cjkq.getFromHistory=function(dicoName)
+{
+	for(let k=0;k<cjkq.history.length;k++)
+		if(cjkq.history[k].dicoName==dicoName) return cjkq.history[k].data;
+	return null;
+};
 cjkq.start=function(dicoName)
 {
+	let d;
 	cjkq.init(dicoName);
-	fetch("_json/"+cjkq.dicoName+".json")
-	.then(r=>r.json())
-	.catch(error =>
-	{
-		console.log("failed to get "+cjkq.dicoName+" json file!");
-		return false;
-	})
-	.then(r=>
-	{
-		if(r) cjkq.addPad(cjkq.makePad(r))
-		else
+	if(d=cjkq.getFromHistory(dicoName)) cjkq.addPad(cjkq.makePad(d));
+	else
+		fetch("_json/"+cjkq.dicoName+".json")
+		.then(r=>
+			{
+				if(!r.ok) throw r.statusText;
+				return r.json();
+			}
+		)
+		.then(r=>
+			{
+				if(r)
+				{
+					cjkq.history.push({dicoName:cjkq.dicoName,data:r});
+					cjkq.addPad(cjkq.makePad(r));
+					return true;
+				}
+				else
+				{
+					cjkq.alert(cjkq.getI18n("Data not available!"));
+					return false;
+				}
+			}
+		)
+		.catch(error =>
 		{
-			cjkq.error=true;
-			cjkq.alert(cjkq.getI18n("Data not available!"));
+			cjkq.alert(cjkq.getI18n("Server unreachable!"));
+			console.log("failed to get "+cjkq.dicoName+" json file!");
 			return false;
-		}
-	});
+		});
 };
 cjkq.stop=function()
 {

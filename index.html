@@ -79,15 +79,22 @@ function doCjkqOKSettings()
 	cjkq.setParamToStore("timePerChar",e.querySelector('.timePerChar input').value);
 	cjkq.setParamToStore("reorderAtEnd",e.querySelector('.reorderAtEnd input').checked?"1":"0");
 	cjkq.setParamToStore("addSolutionAtEnd",e.querySelector('.addSolutionAtEnd input').checked?"1":"0");
+	function getSelectValue(name)
+	{
+		let select=document.querySelector('[name="'+name+'"]');
+		let v=select.options[select.selectedIndex].value;
+		if(v) return v;
+		return cjkq.params[name]; // change nothing
+    }
 	function getRadioValue(name)
 	{
 		let list=document.getElementsByName(name);
-			for(let k=0;k<list.length;k++)
-				if (list[k].checked) return list[k].value;
+		for(let k=0;k<list.length;k++) if (list[k].checked) return list[k].value;
 		return cjkq.params[name]; // change nothing
     }
+	cjkq.setParamToStore("tileOrder",getSelectValue("tileOrder"));
 	cjkq.setParamToStore("displayMode",getRadioValue("displayMode"));
-	cjkq.setParamToStore("tileOrder",getRadioValue("tileOrder"));
+	console.log(getSelectValue("tileOrder"));
 	cjkq.start('');
 }
 function doCjkqSettings()
@@ -96,7 +103,7 @@ function doCjkqSettings()
 	e=document.querySelector(".cjkq .settingsDialog");
 	if(!e)
 	{
-		let s,a;
+		let s,a,b={},v;
 		e=document.createElement('dialog');
 		e.classList.add("settingsDialog");
 		s="<form method='dialog'>";
@@ -108,10 +115,50 @@ function doCjkqSettings()
 		s+="<fieldset>";
 		a=(cjkq.params.targetLang=="fr")?"Disposition initiale des tuiles":"Initial tile layout";
 		s+="<legend>"+a+"</legend>";
-		a=(cjkq.params.targetLang=="fr")?"Toutes mélangées":"All shuffled";
-		s+="<label class='tileOrder'><input type='radio' name='tileOrder' value='shuffled'><span>"+a+"</span></label>";
-		a=(cjkq.params.targetLang=="fr")?"Mélangées par colonne":"Shuffled by column";
-		s+="<label class='tileOrder'><input type='radio' name='tileOrder' value='byColumn'><span>"+a+"</span></label>";
+		console.log(cjkq.params.tileOrder);
+		s+="<select name=\"tileOrder\">";
+		v="shuffled";
+		s+="<option value=\""+v+"\""+(v==cjkq.params.tileOrder?" selected":"")+">";
+		a=(cjkq.params.targetLang=="fr")?"Mélangées":"Shuffled";
+		s+=a;
+		s+="</option>";
+		v="character transcription translation";
+		s+="<option value=\""+v+"\""+(v==cjkq.params.tileOrder?" selected":"")+">";
+		b.ja=(cjkq.params.targetLang=="fr")?"Kanji kana français":"Kanji Kana English";
+		b.zh=(cjkq.params.targetLang=="fr")?"Hanzi pinyin français":"Hanzi Pinyin English";
+		s+=b[cjkq.params.sourceLang];
+		s+="</option>";
+		v="character translation transcription";
+		s+="<option value=\""+v+"\""+(v==cjkq.params.tileOrder?" selected":"")+">";
+		b.ja=(cjkq.params.targetLang=="fr")?"Kanji français kana":"Kanji English Kana";
+		b.zh=(cjkq.params.targetLang=="fr")?"Hanzi français pinyin":"Hanzi English Pinyin";
+		s+=b[cjkq.params.sourceLang];
+		s+="</option>";
+		v="transcription translation character";
+		s+="<option value=\""+v+"\""+(v==cjkq.params.tileOrder?" selected":"")+">";
+		b.ja=(cjkq.params.targetLang=="fr")?"Kana français kanji":"Kanji Kana English";
+		b.zh=(cjkq.params.targetLang=="fr")?"Pinyin français hanzi":"Pinyin English Hanzi";
+		s+=b[cjkq.params.sourceLang];
+		s+="</option>";
+		v="transcription character translation";
+		s+="<option value=\""+v+"\""+(v==cjkq.params.tileOrder?" selected":"")+">";
+		b.ja=(cjkq.params.targetLang=="fr")?"Kana kanji français":"Kanji English Kana";
+		b.zh=(cjkq.params.targetLang=="fr")?"Pinyin hanzi français":"Pinyin Hanzi English";
+		s+=b[cjkq.params.sourceLang];
+		s+="</option>";
+		v="translation character transcription";
+		s+="<option value=\""+v+"\""+(v==cjkq.params.tileOrder?" selected":"")+">";
+		b.ja=(cjkq.params.targetLang=="fr")?"Français kanji kana":"English Kanji Kana";
+		b.zh=(cjkq.params.targetLang=="fr")?"Français hanzi pinyin":"English Hanzi Pinyin";
+		s+=b[cjkq.params.sourceLang];
+		s+="</option>";
+		v="translation transcription character";
+		s+="<option value=\""+v+"\""+(v==cjkq.params.tileOrder?" selected":"")+">";
+		b.ja=(cjkq.params.targetLang=="fr")?"Français kana kanji":"English Kana Kanji";
+		b.zh=(cjkq.params.targetLang=="fr")?"Français pinyin hanzi":"English Pinyin Hanzi";
+		s+=b[cjkq.params.sourceLang];
+		s+="</option>";
+		s+="</select>"
 		s+="</fieldset>";
 		a=(cjkq.params.targetLang=="fr")?"Réordonner à la fin":"Reorder at end";
 		s+="<label class='reorderAtEnd'><input type='checkbox'><span>"+a+"</span></label>";
@@ -139,14 +186,19 @@ function doCjkqSettings()
 	e.querySelector('.timePerChar input').value=cjkq.params.timePerChar;
 	e.querySelector('.reorderAtEnd input').checked=(cjkq.params.reorderAtEnd=="1");
 	e.querySelector('.addSolutionAtEnd input').checked=(cjkq.params.addSolutionAtEnd=="1");
+	function setSelectValue(name,value)
+	{
+		let list=document.getElementsByName(name);
+		for(let k=0;k<list.length;k++) list[k].selected=(list[k].value==value);
+		return cjkq.params[name]; // change nothing
+    }
 	function setRadioValue(name,value)
 	{
 		let list=document.getElementsByName(name);
-			for(let k=0;k<list.length;k++)
-				list[k].checked=(list[k].value==value);
+		for(let k=0;k<list.length;k++) list[k].checked=(list[k].value==value);
     }
+    setSelectValue("tileOrder",cjkq.params.tileOrder);
     setRadioValue("displayMode",cjkq.params.displayMode);
-    setRadioValue("tileOrder",cjkq.params.tileOrder);
 	e.showModal();
 }
 function doCjkqReorder()
@@ -195,7 +247,7 @@ window.addEventListener("load",function()
 	{
 		if(cjkq.getParamFromStore("sourceLang")=="zh") setZh();
 		else setJa();
-		if(cjkq.getParamFromStore("targetLang")=="En") setEn();
+		if(cjkq.getParamFromStore("targetLang")=="en") setEn();
 		else setFr();
 		cjkq.start();
 	}
