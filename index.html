@@ -94,8 +94,7 @@ function doCjkqOKSettings()
     }
 	cjkq.setParamToStore("tileOrder",getSelectValue("tileOrder"));
 	cjkq.setParamToStore("displayMode",getRadioValue("displayMode"));
-	console.log(getSelectValue("tileOrder"));
-	cjkq.start('');
+	cjkq.start("");
 }
 function doCjkqSettings()
 {
@@ -104,18 +103,17 @@ function doCjkqSettings()
 	if(!e)
 	{
 		let s,a,b={},v;
-		e=document.createElement('dialog');
+		e=document.createElement("dialog");
 		e.classList.add("settingsDialog");
-		s="<form method='dialog'>";
+		s="<form method=\"dialog\">";
 		s+="<h1>CJKQuiz</h1>";
 		a=(cjkq.params.targetLang=="fr")?"Nombre de caractères :":"Number of chars:";
-		s+="<label class='numOfChars'><span>"+a+"</span><input type='number' min='1' max='30'></label>";
+		s+="<label class=\"numOfChars\"><span>"+a+"</span><input type=\"number\" min=\"1\" max=\"30\"></label>";
 		a=(cjkq.params.targetLang=="fr")?"Temps par caractère :":"Time per char:";
-		s+="<label class='timePerChar'><span>"+a+"</span><input type='number' min='1' max='30'></label>";
+		s+="<label class=\"timePerChar\"><span>"+a+"</span><input type=\"number\" min=\"1\" max=\"30\"></label>";
 		s+="<fieldset>";
 		a=(cjkq.params.targetLang=="fr")?"Disposition initiale des tuiles":"Initial tile layout";
 		s+="<legend>"+a+"</legend>";
-		console.log(cjkq.params.tileOrder);
 		s+="<select name=\"tileOrder\">";
 		v="shuffled";
 		s+="<option value=\""+v+"\""+(v==cjkq.params.tileOrder?" selected":"")+">";
@@ -161,22 +159,22 @@ function doCjkqSettings()
 		s+="</select>"
 		s+="</fieldset>";
 		a=(cjkq.params.targetLang=="fr")?"Réordonner à la fin":"Reorder at end";
-		s+="<label class='reorderAtEnd'><input type='checkbox'><span>"+a+"</span></label>";
+		s+="<label class=\"reorderAtEnd\"><input type=\"checkbox\"><span>"+a+"</span></label>";
 		a=(cjkq.params.targetLang=="fr")?"Numéros sur les solutions":"Numbers on the solutions";
-		s+="<label class='addSolutionAtEnd'><input type='checkbox'><span>"+a+"</span></label>";
+		s+="<label class=\"addSolutionAtEnd\"><input type=\"checkbox\"><span>"+a+"</span></label>";
 		s+="<fieldset>";
 		a=(cjkq.params.targetLang=="fr")?"Mode d'affichage":"Display mode";
 		s+="<legend>"+a+"</legend>";
 		a=(cjkq.params.targetLang=="fr")?"Sombre":"Dark";
-		s+="<label class='displayMode'><input type='radio' name='displayMode' value='dark'><span>"+a+"</span></label>";
+		s+="<label class=\"displayMode\"><input type=\"radio\" name=\"displayMode\" value=\"dark\"><span>"+a+"</span></label>";
 		a=(cjkq.params.targetLang=="fr")?"Clair":"Light";
-		s+="<label class='displayMode'><input type='radio' name='displayMode' value='light'><span>"+a+"</span></label>";
+		s+="<label class=\"displayMode\"><input type=\"radio\" name=\"displayMode\" value=\"light\"><span>"+a+"</span></label>";
 		s+="</fieldset>";
-		s+="<button value='OK'>OK</button>";
-		s+="<button value='cancel'>"+((cjkq.params.targetLang=="fr")?"Annuler":"Cancel")+"</button>";
+		s+="<button value=\"OK\">OK</button>";
+		s+="<button value=\"cancel\">"+((cjkq.params.targetLang=="fr")?"Annuler":"Cancel")+"</button>";
 		s+="</form>";
 		e.innerHTML=s;
-		e.addEventListener('close',function()
+		e.addEventListener("close",function()
 			{
 				if(this.returnValue=="OK") doCjkqOKSettings();
 			});

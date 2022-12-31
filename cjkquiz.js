@@ -1,5 +1,5 @@
 cjkq={}
-cjkq.copyright="<a href='https://github.com/parsimonhi/CJKQuiz'>CJKQuiz</a>";
+cjkq.copyright="<a href=\"https://github.com/parsimonhi/CJKQuiz\">CJKQuiz</a>";
 cjkq.copyright+=" Copyright 2015-2022 FM&SH";
 cjkq.history=[]; // saves bandwidth and useful if the server is temporarily　unreachable
 cjkq.i18n=
@@ -32,22 +32,22 @@ cjkq.plonk=function()
 };
 cjkq.getStore=function()
 {
-	return JSON.parse(localStorage.getItem('cjkq'));
+	return JSON.parse(localStorage.getItem("cjkq"));
 };
 cjkq.setStore=function(p)
 {
-	localStorage.setItem('cjkq',JSON.stringify(p));
+	localStorage.setItem("cjkq",JSON.stringify(p));
 };
 cjkq.getParamFromStore=function(a)
 {
-	let p=JSON.parse(localStorage.getItem('cjkq'));
+	let p=JSON.parse(localStorage.getItem("cjkq"));
 	return p[a];
 };
 cjkq.setParamToStore=function(a,v)
 {
-	let p=JSON.parse(localStorage.getItem('cjkq'));
+	let p=JSON.parse(localStorage.getItem("cjkq"));
 	p[a]=v;
-	localStorage.setItem('cjkq',JSON.stringify(p));
+	localStorage.setItem("cjkq",JSON.stringify(p));
 };
 cjkq.getI18n=function(s)
 {
@@ -134,7 +134,7 @@ cjkq.cleanNumbers=function()
 	// when several tiles have the same value, make an appropriate permutation on data-k
 	if(x!=y)
 	{
-		e=document.querySelector("[data-t='transcription'][data-k='"+x+"']");
+		e=document.querySelector('[data-t="transcription"][data-k="'+x+'"]');
 		if(e)
 		{
 			cjkq.selected.transcription.setAttribute("data-k",x);
@@ -143,7 +143,7 @@ cjkq.cleanNumbers=function()
 	}
 	if(x!=z)
 	{
-		e=document.querySelector("[data-t='translation'][data-k='"+x+"']");
+		e=document.querySelector('[data-t="translation"][data-k="'+x+'"]');
 		if(e)
 		{
 			cjkq.selected.translation.setAttribute("data-k",x);
@@ -155,9 +155,9 @@ cjkq.cleanNumbers=function()
 	if(x!=a)
 	{
 		let e1,e2,e3;
-		e1=document.querySelector("[data-t='character'][data-k='"+a+"']");
-		e2=document.querySelector("[data-t='transcription'][data-k='"+a+"']");
-		e3=document.querySelector("[data-t='translation'][data-k='"+a+"']");
+		e1=document.querySelector('[data-t="character"][data-k="'+a+'"]');
+		e2=document.querySelector('[data-t="transcription"][data-k="'+a+'"]');
+		e3=document.querySelector('[data-t="translation"][data-k="'+a+'"]');
 		if(e1&&e2&&e3)
 		{
 			cjkq.selected.character.setAttribute("data-k",a);
@@ -242,9 +242,9 @@ cjkq.doIt=function(ev)
 cjkq.makePad=function(dico)
 {
 	let ij,s="",d=cjkq.getSome(dico);
-	s+="<div class='instructions'>"+cjkq.instructions[cjkq.params.targetLang]+"</div>";
-	s+="<div class='time'></div>";
-	s+="<div class='pad'>";
+	s+="<div class=\"instructions\">"+cjkq.instructions[cjkq.params.targetLang]+"</div>";
+	s+="<div class=\"time\"></div>";
+	s+="<div class=\"pad\">";
 	for(ij=0;ij<cjkq.ijmax;ij++)
 	{
 		let x=d[ij];
@@ -252,23 +252,23 @@ cjkq.makePad=function(dico)
 		{
 			let v=((x[2]=="character")&&x[3])?x[3]:null;
 			let l=(x[2]=="character")?cjkq.params.sourceLang:null;
-			s+="<button class='tile' onclick='cjkq.doIt(event)'";
-			s+=(l?" lang='"+l+"'":"");
-			s+=" data-t='"+x[2]+"' data-c='"+x[1]+"' data-k='"+x[0]+"'>";
+			s+="<button class=\"tile\" onclick=\"cjkq.doIt(event)\"";
+			s+=(l?" lang=\""+l+"\"":"");
+			s+=" data-t=\""+x[2]+"\" data-c=\""+x[1]+"\" data-k=\""+x[0]+"\">";
 			s+="<span";
-			if(x[2]=="character") s+=(v?" data-v='"+v+"'":"");
+			if(x[2]=="character") s+=(v?" data-v=\""+v+"\"":"");
 			s+=">";
 			s+=x[1];
 			s+="</span>";
 			s+="</button>";
 		}
-		else s+="<div class='tile'></div>";
+		else s+="<div class=\"tile\"></div>";
 	}
 	s+="</div>";
-	s+="<div class='level'></div>";
-	s+="<div class='answers'></div>";
-	s+="<div class='errors'></div>";
-	s+="<div class='score'></div>";
+	s+="<div class=\"level\"></div>";
+	s+="<div class=\"answers\"></div>";
+	s+="<div class=\"errors\"></div>";
+	s+="<div class=\"score\"></div>";
 	s+="<em>"+cjkq.copyright+"</em>";
 	return s;
 };
@@ -331,7 +331,7 @@ cjkq.reorder=function()
 	kmax=cjkq.params.numOfChars;
 	for(k=0;k<cjkq.params.numOfChars;k++)
 	{
-		e=document.querySelector(".cjkq .tile[data-k='"+k+"'][data-t='character']");
+		e=document.querySelector('.cjkq .tile[data-k="'+k+'"][data-t="character"]');
 		if(e.classList.contains("good")) goodChars.push(k);
 		else if(e.classList.contains("bad")) badChars.push(k);
 		else otherChars.push(k);
@@ -340,11 +340,11 @@ cjkq.reorder=function()
 	dataOrder=cjkq.getDataOrder();
 	for(k=0;k<cjkq.params.numOfChars;k++)
 	{
-		e=document.querySelector(".cjkq .tile[data-k='"+allChars[k]+"'][data-t='"+dataOrder[0]+"']");
+		e=document.querySelector('.cjkq .tile[data-k="'+allChars[k]+'"][data-t="'+dataOrder[0]+'"]');
 		e.style.order=k*3;
-		e=document.querySelector(".cjkq .tile[data-k='"+allChars[k]+"'][data-t='"+dataOrder[1]+"']");
+		e=document.querySelector('.cjkq .tile[data-k="'+allChars[k]+'"][data-t="'+dataOrder[1]+'"]');
 		e.style.order=k*3+1;
-		e=document.querySelector(".cjkq .tile[data-k='"+allChars[k]+"'][data-t='"+dataOrder[2]+"']");
+		e=document.querySelector('.cjkq .tile[data-k="'+allChars[k]+'"][data-t="'+dataOrder[2]+'"]');
 		e.style.order=k*3+2;
 	}
 	cjkq.reordered=1;
@@ -380,13 +380,13 @@ cjkq.alert=function(m,title="CJKQuiz",cls="neutral")
 	if(!e)
 	{
 		let s="",a,b,c;
-		e=document.createElement('dialog');
+		e=document.createElement("dialog");
 		e.classList.add("alertDialog");
 		e.classList.add(cls);
 		s+="<h1>"+title+"</h1>";
-		s+="<form method='dialog'>";
-		s+="<p class='message'>"+m+"</p>";
-		s+="<button value='OK'>OK</button>";
+		s+="<form method=\"dialog\">";
+		s+="<p class=\"message\">"+m+"</p>";
+		s+="<button value=\"OK\">OK</button>";
 		s+="</form>";
 		e.innerHTML=s;
 		document.querySelector(".cjkq").appendChild(e);
