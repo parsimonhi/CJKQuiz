@@ -1,6 +1,6 @@
 cjkq={}
 cjkq.copyright="<a href=\"https://github.com/parsimonhi/CJKQuiz\">CJKQuiz</a>";
-cjkq.copyright+=" Copyright 2015-2022 FM&SH";
+cjkq.copyright+=" Copyright 2015-2024 FM&SH";
 cjkq.history=[]; // saves bandwidth and useful if the server is temporarily　unreachable
 cjkq.i18n=
 {

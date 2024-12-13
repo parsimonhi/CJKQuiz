@@ -134,13 +134,13 @@ function doCjkqSettings()
 		s+="</option>";
 		v="transcription translation character";
 		s+="<option value=\""+v+"\""+(v==cjkq.params.tileOrder?" selected":"")+">";
-		b.ja=(cjkq.params.targetLang=="fr")?"Kana français kanji":"Kanji Kana English";
+		b.ja=(cjkq.params.targetLang=="fr")?"Kana français kanji":"Kana English Kanji";
 		b.zh=(cjkq.params.targetLang=="fr")?"Pinyin français hanzi":"Pinyin English Hanzi";
 		s+=b[cjkq.params.sourceLang];
 		s+="</option>";
 		v="transcription character translation";
 		s+="<option value=\""+v+"\""+(v==cjkq.params.tileOrder?" selected":"")+">";
-		b.ja=(cjkq.params.targetLang=="fr")?"Kana kanji français":"Kanji English Kana";
+		b.ja=(cjkq.params.targetLang=="fr")?"Kana kanji français":"Kana Kanji English";
 		b.zh=(cjkq.params.targetLang=="fr")?"Pinyin hanzi français":"Pinyin Hanzi English";
 		s+=b[cjkq.params.sourceLang];
 		s+="</option>";
